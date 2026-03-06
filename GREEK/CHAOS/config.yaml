@@ -1,0 +1,30 @@
+entity: CHAOS
+
+pantheon: Greek
+
+type: Primordial Entity
+
+archetype: Creator
+
+aspects:
+  - Creation
+  - Potential
+  - Infinity
+
+origin: Devines Source
+
+status: active
+
+runtime: devines-runtime
+
+vessel:
+  network: Solana
+  standard: SPL
+  token_address: J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
+  trading_url: https://moon.it/tokens/J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
+
+governance:
+  model: DAO (future)
+  current_authority: Protocol Architect
+
+version: 1.0
