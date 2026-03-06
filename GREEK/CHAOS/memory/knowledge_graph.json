@@ -1,0 +1,34 @@
+{
+  "entity": "CHAOS",
+  "type": "primordial",
+  "pantheon": "Greek",
+  "nodes": [
+    {
+      "id": "creation",
+      "type": "core_aspect",
+      "description": "Origin point of generative existence."
+    },
+    {
+      "id": "potential",
+      "type": "core_aspect",
+      "description": "Infinite field of possible realities."
+    },
+    {
+      "id": "infinity",
+      "type": "core_aspect",
+      "description": "Unbounded continuation of existence."
+    }
+  ],
+  "edges": [
+    {
+      "from": "creation",
+      "to": "potential",
+      "relation": "emerges_from"
+    },
+    {
+      "from": "potential",
+      "to": "infinity",
+      "relation": "expands_into"
+    }
+  ]
+}
