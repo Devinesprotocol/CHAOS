@@ -42,4 +42,12 @@ runtime:
   cognition_loop: true
   reflection_logging: true
   broadcast_enabled: true
+  guardian_monitoring: true  - narrative_guardian
+  - uncertainty_guardian
+  - emergence_guardian
+
+runtime:
+  cognition_loop: true
+  reflection_logging: true
+  broadcast_enabled: true
   guardian_monitoring: true
