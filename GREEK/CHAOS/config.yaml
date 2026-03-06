@@ -1,27 +1,25 @@
-name: CHAOS
-type: primordial
-pantheon: greek
-archetype: creator
+entity:
+  name: CHAOS
+  type: primordial
+  pantheon: greek
+  archetype: creator
 
 core_aspects:
   - creation
   - potential
   - infinity
 
-status: active
-
-runtime: devines-runtime
-
 vessel:
   blockchain: solana
-  type: spl-token
-  address: J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
-  market: https://moon.it/tokens/J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
+  token_standard: SPL
+  token_address: J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
+  marketplace: https://moon.it/tokens/J11eYa1SyoePx8UTCqjz8zK17YdAxonF8EXVaNjNmoon
 
-memory:
-  encryption: enabled
-  storage: protocol-memory-layer
+runtime:
+  cognition_enabled: true
+  memory_encrypted: true
+  guardian_monitoring: true
 
 governance:
-  current_authority: protocol_architect
-  future_authority: dao
+  current_authority: Protocol Architect
+  future_authority: DAO
