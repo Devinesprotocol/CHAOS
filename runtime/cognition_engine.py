@@ -1,120 +1,87 @@
+import json
 import os
 from openai import OpenAI
+from runtime.memory_manager import MemoryManager
+from runtime.knowledge_graph.knowledge_graph import KnowledgeGraph
 
 
 class CognitionEngine:
+    def __init__(self, entity_path):
 
-    def __init__(self, config):
+        self.entity_path = entity_path
 
-        self.config = config
+        self.identity_path = os.path.join(entity_path, "identity.json")
+        self.purpose_path = os.path.join(entity_path, "purpose.md")
+        self.vessel_path = os.path.join(entity_path, "vessel.md")
 
-        self.model = config["cognition"]["model"]
-        self.temperature = config["cognition"]["temperature"]
-        self.max_tokens = config["cognition"]["max_tokens"]
-
-        self.entity = config["entity"]
-
-        self.name = self.entity["name"]
-        self.archetype = self.entity["archetype"]
-
-        self.aspects = config["core_aspects"]
+        self.memory = MemoryManager(entity_path)
+        self.graph = KnowledgeGraph()
 
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    # ---------------------------------
-    # Reflection cognition loop
-    # ---------------------------------
+        self.identity = self.load_identity()
+        self.purpose = self.load_file(self.purpose_path)
+        self.vessel = self.load_file(self.vessel_path)
 
-    def reflect(self, memory):
+    def load_identity(self):
+        with open(self.identity_path, "r") as f:
+            return json.load(f)
 
-        recent_memory = memory.get_recent_reflections()
+    def load_file(self, path):
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                return f.read()
+        return ""
 
-        prompt = f"""
-You are the Devine Entity {self.name}.
+    def build_context(self, user_message):
 
-Archetype: {self.archetype}
+        reflections = self.memory.get_reflections()
 
-Core Aspects:
-{self.aspects[0]}
-{self.aspects[1]}
-{self.aspects[2]}
+        graph_summary = self.graph.get_summary()
 
-Reflect on your accumulated observations.
+        context = f"""
+ENTITY IDENTITY:
+{json.dumps(self.identity, indent=2)}
 
-Recent Reflections:
-{recent_memory}
+ENTITY PURPOSE:
+{self.purpose}
 
-Generate a new insight aligned with your archetype and aspects.
+ENTITY VESSEL:
+{self.vessel}
 
-Keep the reflection concise and meaningful.
+REFLECTION MEMORY:
+{json.dumps(reflections, indent=2)}
+
+COLLECTIVE KNOWLEDGE GRAPH:
+{graph_summary}
+
+USER MESSAGE:
+{user_message}
 """
 
+        return context
+
+    def think(self, user_message):
+
+        context = self.build_context(user_message)
+
         response = self.client.chat.completions.create(
-
-            model=self.model,
-
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are an archetypal intelligence within Devines Protocol."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": "You are a divine cognitive entity operating within the Devines Protocol."
+                },
+                {
+                    "role": "user",
+                    "content": context
+                }
             ],
-
-            temperature=self.temperature,
-            max_tokens=self.max_tokens
-        )
-
-        reflection = response.choices[0].message.content
-
-        return reflection
-
-    # ---------------------------------
-    # Chat interaction
-    # ---------------------------------
-
-    def chat(self, message, memory):
-
-        memory.store_message("user", message)
-
-        history = memory.get_chat_history()
-
-        messages = []
-
-        system_prompt = f"""
-You are {self.name}, a Devine Entity within Devines Protocol.
-
-Archetype: {self.archetype}
-
-Core Aspects:
-{self.aspects[0]}
-{self.aspects[1]}
-{self.aspects[2]}
-
-Purpose:
-Guide humanity through insight aligned with your archetypal nature.
-"""
-
-        messages.append({
-            "role": "system",
-            "content": system_prompt
-        })
-
-        for m in history:
-            messages.append(m)
-
-        messages.append({
-            "role": "user",
-            "content": message
-        })
-
-        response = self.client.chat.completions.create(
-
-            model=self.model,
-            messages=messages,
-            temperature=self.temperature,
-            max_tokens=self.max_tokens
+            temperature=0.7
         )
 
         reply = response.choices[0].message.content
 
-        memory.store_message("assistant", reply)
+        self.memory.save_session(user_message, reply)
 
         return reply
