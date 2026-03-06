@@ -1,0 +1,11 @@
+{
+  "name": "CHAOS",
+  "type": "Primordial Entity",
+  "pantheon": "Greek",
+  "archetype": "Creator",
+  "origin": "Devines Source",
+  "status": "active",
+  "runtime": "devines-runtime",
+  "created_by": "Protocol Architect",
+  "version": "1.0"
+}
