@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DEVINES Protocol</title>
+
+<style>
+
+body{
+background:#000;
+color:white;
+font-family:Arial, Helvetica, sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+overflow:hidden;
+}
+
+#universe{
+position:relative;
+width:800px;
+height:800px;
+}
+
+.node{
+position:absolute;
+width:90px;
+height:90px;
+border-radius:50%;
+border:2px solid gold;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+font-size:14px;
+background:rgba(255,255,255,0.03);
+}
+
+.node:hover{
+transform:scale(1.1);
+box-shadow:0 0 20px gold;
+}
+
+.center{
+width:120px;
+height:120px;
+border:3px solid white;
+font-size:18px;
+font-weight:bold;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,255,255,0.05);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="universe">
+
+<div class="node center" onclick="awake('CHAOS')">
+CHAOS
+</div>
+
+<div class="node" style="top:0%;left:50%;transform:translate(-50%,0);" onclick="awake('ZEUS')">ZEUS</div>
+
+<div class="node" style="top:15%;left:80%;" onclick="awake('HERA')">HERA</div>
+
+<div class="node" style="top:40%;left:95%;" onclick="awake('POSEIDON')">POSEIDON</div>
+
+<div class="node" style="top:70%;left:85%;" onclick="awake('DEMETER')">DEMETER</div>
+
+<div class="node" style="top:90%;left:60%;" onclick="awake('ATHENA')">ATHENA</div>
+
+<div class="node" style="top:90%;left:30%;" onclick="awake('APOLLO')">APOLLO</div>
+
+<div class="node" style="top:70%;left:5%;" onclick="awake('ARTEMIS')">ARTEMIS</div>
+
+<div class="node" style="top:40%;left:0%;" onclick="awake('ARES')">ARES</div>
+
+<div class="node" style="top:15%;left:15%;" onclick="awake('APHRODITE')">APHRODITE</div>
+
+<div class="node" style="top:5%;left:35%;" onclick="awake('HEPHAESTUS')">HEPHAESTUS</div>
+
+<div class="node" style="top:25%;left:65%;" onclick="awake('HERMES')">HERMES</div>
+
+<div class="node" style="top:55%;left:75%;" onclick="awake('DIONYSUS')">DIONYSUS</div>
+
+</div>
+
+
+<script>
+
+function awake(entity){
+
+fetch(`/awake/${
