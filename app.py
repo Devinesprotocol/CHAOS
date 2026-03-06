@@ -1,27 +1,19 @@
-from flask import Flask, request
-from flask_cors import CORS
 import os
+from flask import Flask
 
 app = Flask(__name__)
-CORS(app)
 
 @app.route("/")
 def home():
-    return {"agent": "CHAOS", "status": "active"}
+    return {"system": "Devines Protocol", "core": "CHAOS"}
 
 @app.route("/health")
 def health():
-    return {"status": "alive", "agent": "CHAOS"}
+    return {"status": "alive"}
 
-@app.route("/message", methods=["POST"])
-def message():
-    data = request.json
-    user_message = data.get("message", "")
-
-    return {
-        "agent": "CHAOS",
-        "reply": f"Received: {user_message}"
-    }
+@app.route("/ping")
+def ping():
+    return {"ping": "pong"}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
