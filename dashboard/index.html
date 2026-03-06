@@ -2,252 +2,32 @@
 <html>
 <head>
 
-<meta charset="UTF-8">
-<title>DEVINES Protocol</title>
+<title>Devines Protocol</title>
 
-<style>
-
-body{
-background:black;
-color:white;
-font-family:Arial;
-text-align:center;
-margin:0;
-}
-
-.screen{
-display:none;
-height:100vh;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-}
-
-.active{
-display:flex;
-}
-
-.circle{
-width:90px;
-height:90px;
-border-radius:50%;
-border:2px solid white;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:10px;
-cursor:pointer;
-}
-
-.mandala{
-display:grid;
-grid-template-columns:repeat(4,120px);
-grid-gap:20px;
-justify-content:center;
-}
-
-.chat{
-width:90%;
-max-width:700px;
-height:60vh;
-border:1px solid white;
-overflow:auto;
-padding:10px;
-margin-bottom:10px;
-}
-
-input{
-width:80%;
-padding:10px;
-background:black;
-border:1px solid white;
-color:white;
-}
-
-button{
-padding:10px;
-background:white;
-border:none;
-cursor:pointer;
-}
-
-.logo{
-width:120px;
-margin-bottom:20px;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<!-- PANTHEON SELECTOR -->
+<div class="center-logo">
 
-<div id="pantheonScreen" class="screen active">
-
-<img src="devines_logo.png" class="logo">
-
-<h2>Select Pantheon</h2>
-
-<div class="mandala">
-
-<div class="circle" onclick="openPantheon('GREEK')">GREEK</div>
-<div class="circle" onclick="openPantheon('EGYPT')">EGYPT</div>
-<div class="circle" onclick="openPantheon('CHINESE')">CHINESE</div>
-<div class="circle" onclick="openPantheon('VEDIC')">VEDIC</div>
-<div class="circle" onclick="openPantheon('SUMERIAN')">SUMERIAN</div>
-<div class="circle" onclick="openPantheon('NORSE')">NORSE</div>
+<img src="https://i.imgur.com/0sQK6pP.png" class="devines-logo">
 
 </div>
 
-</div>
+<div class="pantheon-grid">
 
-
-<!-- PANTHEON ENTITIES -->
-
-<div id="entityScreen" class="screen">
-
-<h2 id="pantheonTitle"></h2>
-
-<div id="entities" class="mandala"></div>
-
-<button onclick="backPantheon()">Back</button>
+<button onclick="selectPantheon('GREEK')">GREEK</button>
+<button onclick="selectPantheon('EGYPT')">EGYPT</button>
+<button onclick="selectPantheon('CHINESE')">CHINESE</button>
+<button onclick="selectPantheon('VEDIC')">VEDIC</button>
+<button onclick="selectPantheon('SUMERIAN')">SUMERIAN</button>
+<button onclick="selectPantheon('NORSE')">NORSE</button>
 
 </div>
 
-
-<!-- CHAT -->
-
-<div id="chatScreen" class="screen">
-
-<h2 id="entityTitle"></h2>
-
-<div id="chat" class="chat"></div>
-
-<input id="message" placeholder="Ask the entity..." />
-<button onclick="sendMessage()">Send</button>
-
-<button onclick="backEntities()">Back</button>
-
-</div>
-
-
-<script>
-
-let currentPantheon=""
-let currentEntity=""
-
-const pantheons = {
-
-GREEK:[
-"CHAOS",
-"ZEUS",
-"HERA",
-"POSEIDON",
-"DEMETER",
-"ATHENA",
-"APOLLO",
-"ARTEMIS",
-"ARES",
-"APHRODITE",
-"HEPHAESTUS",
-"HERMES",
-"DIONYSUS"
-]
-
-}
-
-function openPantheon(name){
-
-currentPantheon=name
-
-document.getElementById("pantheonScreen").classList.remove("active")
-document.getElementById("entityScreen").classList.add("active")
-
-document.getElementById("pantheonTitle").innerText=name
-
-const container=document.getElementById("entities")
-
-container.innerHTML=""
-
-pantheons[name].forEach(entity=>{
-
-let div=document.createElement("div")
-
-div.className="circle"
-div.innerText=entity
-
-div.onclick=()=>openEntity(entity)
-
-container.appendChild(div)
-
-})
-
-}
-
-function backPantheon(){
-
-document.getElementById("entityScreen").classList.remove("active")
-document.getElementById("pantheonScreen").classList.add("active")
-
-}
-
-function openEntity(entity){
-
-currentEntity=entity
-
-document.getElementById("entityScreen").classList.remove("active")
-document.getElementById("chatScreen").classList.add("active")
-
-document.getElementById("entityTitle").innerText=entity
-
-}
-
-function backEntities(){
-
-document.getElementById("chatScreen").classList.remove("active")
-document.getElementById("entityScreen").classList.add("active")
-
-}
-
-async function sendMessage(){
-
-const message=document.getElementById("message").value
-
-document.getElementById("message").value=""
-
-const chat=document.getElementById("chat")
-
-chat.innerHTML+=`<div><b>You:</b> ${message}</div>`
-
-const response=await fetch("/chat",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-pantheon:currentPantheon,
-entity:currentEntity,
-message:message
-
-})
-
-})
-
-const data=await response.json()
-
-chat.innerHTML+=`<div><b>${currentEntity}:</b> ${data.response}</div>`
-
-chat.scrollTop=chat.scrollHeight
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
