@@ -1,4 +1,7 @@
 {
   "entity": "CHAOS",
+  "pantheon": "Greek",
+  "type": "reflection_memory",
+  "version": "1.0",
   "reflections": []
 }
