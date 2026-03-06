@@ -2,58 +2,111 @@ import os
 import json
 from cryptography.fernet import Fernet
 
+
 class MemoryManager:
 
     def __init__(self, entity_path):
 
         self.entity_path = entity_path
-        self.memory_path = f"{entity_path}/memory"
+        self.memory_path = os.path.join(entity_path, "memory")
 
         if not os.path.exists(self.memory_path):
             os.makedirs(self.memory_path)
 
-        self.key_path = f"{entity_path}/memory.key"
+        self.key_path = os.path.join(self.memory_path, "memory.key")
 
-        if not os.path.exists(self.key_path):
+        self.identity_file = os.path.join(self.memory_path, "identity.enc")
+        self.knowledge_file = os.path.join(self.memory_path, "knowledge.enc")
+        self.reflections_file = os.path.join(self.memory_path, "reflections.enc")
+        self.chat_file = os.path.join(self.memory_path, "chat.enc")
+
+        self.fernet = self._load_or_create_key()
+
+    def _load_or_create_key(self):
+
+        if os.path.exists(self.key_path):
+            with open(self.key_path, "rb") as f:
+                key = f.read()
+        else:
             key = Fernet.generate_key()
             with open(self.key_path, "wb") as f:
                 f.write(key)
 
-        with open(self.key_path, "rb") as f:
-            self.key = f.read()
+        return Fernet(key)
 
-        self.cipher = Fernet(self.key)
+    def _encrypt_and_store(self, filepath, data):
 
-    def store_reflection(self, text):
+        serialized = json.dumps(data).encode()
 
-        encrypted = self.cipher.encrypt(text.encode())
+        encrypted = self.fernet.encrypt(serialized)
 
-        filename = f"{self.memory_path}/reflection_{len(os.listdir(self.memory_path))}.enc"
-
-        with open(filename, "wb") as f:
+        with open(filepath, "wb") as f:
             f.write(encrypted)
 
-    def load_recent_memory(self, limit=5):
+    def _load_and_decrypt(self, filepath):
 
-        files = sorted(os.listdir(self.memory_path))[-limit:]
+        if not os.path.exists(filepath):
+            return []
 
-        memories = []
+        with open(filepath, "rb") as f:
+            encrypted = f.read()
 
-        for file in files:
+        try:
+            decrypted = self.fernet.decrypt(encrypted)
+            return json.loads(decrypted.decode())
+        except Exception:
+            return []
 
-            with open(f"{self.memory_path}/{file}", "rb") as f:
+    # --------------------------
+    # REFLECTION STORAGE
+    # --------------------------
 
-                encrypted = f.read()
-                decrypted = self.cipher.decrypt(encrypted).decode()
+    def store_reflection(self, reflection):
 
-                memories.append(decrypted)
+        reflections = self._load_and_decrypt(self.reflections_file)
 
-        return "\n".join(memories)            memory = json.load(f)
+        reflections.append({
+            "type": "reflection",
+            "content": reflection
+        })
 
-    memory.append({
-        "role": role,
-        "content": content
-    })
+        self._encrypt_and_store(self.reflections_file, reflections)
 
-    with open(path, "w") as f:
-        json.dump(memory, f, indent=2)
+    def get_reflections(self):
+
+        return self._load_and_decrypt(self.reflections_file)
+
+    # --------------------------
+    # CHAT MEMORY
+    # --------------------------
+
+    def store_chat(self, role, message):
+
+        chat = self._load_and_decrypt(self.chat_file)
+
+        chat.append({
+            "role": role,
+            "content": message
+        })
+
+        self._encrypt_and_store(self.chat_file, chat)
+
+    def get_chat_history(self):
+
+        return self._load_and_decrypt(self.chat_file)
+
+    # --------------------------
+    # KNOWLEDGE STORAGE
+    # --------------------------
+
+    def store_knowledge(self, data):
+
+        knowledge = self._load_and_decrypt(self.knowledge_file)
+
+        knowledge.append(data)
+
+        self._encrypt_and_store(self.knowledge_file, knowledge)
+
+    def get_knowledge(self):
+
+        return self._load_and_decrypt(self.knowledge_file)
