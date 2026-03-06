@@ -1,20 +1,25 @@
+from flask import Flask, jsonify, render_template
+from flask_cors import CORS
 import os
-from flask import Flask
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def home():
-    return {"system": "Devines Protocol", "core": "CHAOS"}
+    return render_template("index.html")
 
 @app.route("/health")
 def health():
-    return {"status": "alive"}
+    return jsonify({"status":"alive"})
 
-@app.route("/ping")
-def ping():
-    return {"ping": "pong"}
+@app.route("/api")
+def api():
+    return jsonify({
+        "core":"CHAOS",
+        "system":"Devines Protocol"
+    })
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get("PORT",10000))
     app.run(host="0.0.0.0", port=port)
