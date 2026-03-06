@@ -4,49 +4,46 @@ import os
 
 class KnowledgeGraph:
 
-    def __init__(self, graph_path="knowledge_graph/graph.json"):
+    def __init__(self, entity_path):
 
-        self.graph_path = graph_path
+        self.entity_path = entity_path
+        self.graph_path = f"{entity_path}/memory/knowledge_graph.json"
 
-        # Ensure graph file exists
         if not os.path.exists(self.graph_path):
-            self._create_empty_graph()
+            self._create_graph()
 
-        with open(self.graph_path, "r") as f:
-            self.graph = json.load(f)
+    def _create_graph(self):
 
-    def _create_empty_graph(self):
-
-        os.makedirs(os.path.dirname(self.graph_path), exist_ok=True)
-
-        empty_graph = {
-            "nodes": {},
+        graph = {
+            "nodes": [],
             "edges": []
         }
 
         with open(self.graph_path, "w") as f:
-            json.dump(empty_graph, f, indent=2)
+            json.dump(graph, f, indent=4)
 
-    # -------------------------
-    # Node Management
-    # -------------------------
+    def load_graph(self):
 
-    def add_node(self, name, data=None):
+        with open(self.graph_path, "r") as f:
+            return json.load(f)
 
-        if name not in self.graph["nodes"]:
-            self.graph["nodes"][name] = data or {}
+    def save_graph(self, graph):
 
-            self._save()
+        with open(self.graph_path, "w") as f:
+            json.dump(graph, f, indent=4)
 
-    def get_node(self, name):
+    def add_node(self, node):
 
-        return self.graph["nodes"].get(name)
+        graph = self.load_graph()
 
-    # -------------------------
-    # Edge Management
-    # -------------------------
+        if node not in graph["nodes"]:
+            graph["nodes"].append(node)
+
+        self.save_graph(graph)
 
     def add_edge(self, source, target, relation):
+
+        graph = self.load_graph()
 
         edge = {
             "source": source,
@@ -54,25 +51,19 @@ class KnowledgeGraph:
             "relation": relation
         }
 
-        self.graph["edges"].append(edge)
+        if edge not in graph["edges"]:
+            graph["edges"].append(edge)
 
-        self._save()
+        self.save_graph(graph)
 
-    def get_edges(self, node):
+    def get_neighbors(self, node):
 
-        results = []
+        graph = self.load_graph()
 
-        for edge in self.graph["edges"]:
-            if edge["source"] == node or edge["target"] == node:
-                results.append(edge)
+        neighbors = []
 
-        return results
+        for edge in graph["edges"]:
+            if edge["source"] == node:
+                neighbors.append(edge["target"])
 
-    # -------------------------
-    # Save Graph
-    # -------------------------
-
-    def _save(self):
-
-        with open(self.graph_path, "w") as f:
-            json.dump(self.graph, f, indent=2)
+        return neighbors
