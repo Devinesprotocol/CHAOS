@@ -1,40 +1,46 @@
-import os
-import json
-from openai import OpenAI
+import yaml
+import time
 
-from runtime.memory_manager import store_memory, load_memory
-from runtime.entity_loader import load_entity
-from runtime.guardian_monitor import guardian_check
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+from cognition_engine import CognitionEngine
+from memory_manager import MemoryManager
+from guardian_manager import GuardianManager
 
 
-class DevinesRuntime:
+class DevineRuntime:
 
-    def __init__(self, entity_name):
-        self.entity = load_entity(entity_name)
-        self.config = self.entity["config"]
-        self.identity = self.entity["identity"]
+    def __init__(self, entity_path):
 
-    def think(self, message):
+        self.entity_path = entity_path
 
-        memory = load_memory(self.identity["name"])
+        with open(f"{entity_path}/config.yaml", "r") as f:
+            self.config = yaml.safe_load(f)
 
-        messages = memory + [
-            {"role": "user", "content": message}
-        ]
+        self.memory = MemoryManager(entity_path)
+        self.cognition = CognitionEngine(self.config)
+        self.guardians = GuardianManager(entity_path)
 
-        response = client.chat.completions.create(
-            model=self.config["cognition"]["model"],
-            messages=messages,
-            temperature=self.config["cognition"]["temperature"],
-            max_tokens=self.config["cognition"]["max_tokens"]
-        )
+    def start(self):
 
-        reply = response.choices[0].message.content
+        print(f"Awakening entity: {self.config['entity']['name']}")
 
-        store_memory(self.identity["name"], "user", message)
-        store_memory(self.identity["name"], "assistant", reply)
+        while True:
+
+            thought = self.cognition.think(self.memory)
+
+            self.memory.store_reflection(thought)
+
+            self.guardians.observe(thought)
+
+            time.sleep(10)
+
+
+if __name__ == "__main__":
+
+    entity_path = "../GREEK/CHAOS"
+
+    runtime = DevineRuntime(entity_path)
+
+    runtime.start()        store_memory(self.identity["name"], "assistant", reply)
 
         guardian_check(self.identity["name"], reply)
 
