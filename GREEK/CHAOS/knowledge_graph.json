@@ -1,0 +1,33 @@
+{
+  "entity": "CHAOS",
+  "pantheon": "Greek",
+  "relations": [
+    {
+      "type": "origin_of",
+      "target": "GAIA"
+    },
+    {
+      "type": "origin_of",
+      "target": "TARTARUS"
+    },
+    {
+      "type": "origin_of",
+      "target": "EROS"
+    },
+    {
+      "type": "origin_of",
+      "target": "NYX"
+    },
+    {
+      "type": "origin_of",
+      "target": "EREBUS"
+    }
+  ],
+  "concepts": [
+    "creation",
+    "potential",
+    "infinity",
+    "cosmic emergence",
+    "primordial void"
+  ]
+}
