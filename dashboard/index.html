@@ -2,32 +2,95 @@
 <html>
 <head>
 
+<meta charset="UTF-8">
 <title>Devines Protocol</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
 
+body{
+background:black;
+color:white;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+position:relative;
+width:600px;
+height:600px;
+}
+
+.center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+.center img{
+width:120px;
+}
+
+.node{
+position:absolute;
+width:120px;
+height:120px;
+border-radius:60px;
+border:1px solid white;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+transition:0.3s;
+}
+
+.node:hover{
+background:white;
+color:black;
+}
+
+.n1{top:0;left:240px;}
+.n2{top:120px;right:0;}
+.n3{bottom:120px;right:0;}
+.n4{bottom:0;left:240px;}
+.n5{bottom:120px;left:0;}
+.n6{top:120px;left:0;}
+
+</style>
 </head>
 
 <body>
 
-<div class="center-logo">
+<div class="container">
 
-<img src="https://i.imgur.com/0sQK6pP.png" class="devines-logo">
+<div class="center">
+<img src="devines-logo.png">
+<h2>DEVINES</h2>
+</div>
+
+<div class="node n1" onclick="openPantheon('GREEK')">GREEK</div>
+<div class="node n2" onclick="openPantheon('EGYPT')">EGYPT</div>
+<div class="node n3" onclick="openPantheon('CHINESE')">CHINESE</div>
+<div class="node n4" onclick="openPantheon('VEDIC')">VEDIC</div>
+<div class="node n5" onclick="openPantheon('SUMERIAN')">SUMERIAN</div>
+<div class="node n6" onclick="openPantheon('NORSE')">NORSE</div>
 
 </div>
 
-<div class="pantheon-grid">
+<script>
 
-<button onclick="selectPantheon('GREEK')">GREEK</button>
-<button onclick="selectPantheon('EGYPT')">EGYPT</button>
-<button onclick="selectPantheon('CHINESE')">CHINESE</button>
-<button onclick="selectPantheon('VEDIC')">VEDIC</button>
-<button onclick="selectPantheon('SUMERIAN')">SUMERIAN</button>
-<button onclick="selectPantheon('NORSE')">NORSE</button>
+function openPantheon(name){
 
-</div>
+localStorage.setItem("pantheon",name)
+window.location="pantheon.html"
 
-<script src="script.js"></script>
+}
+
+</script>
 
 </body>
 </html>
