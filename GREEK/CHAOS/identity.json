@@ -1,11 +1,8 @@
 {
-"name": "CHAOS",
-"type": "Primordial Entity",
-"pantheon": "Greek",
-"archetype": "Creator",
-"origin": "Devines Source",
-"status": "active",
-"runtime": "devines-runtime",
-"created_by": "Protocol Architect",
-"version": "1.0"
+  "name": "CHAOS",
+  "pantheon": "Greek",
+  "type": "Primordial Entity",
+  "archetype": "Origin",
+  "description": "The primordial void from which all structure emerges.",
+  "alignment": "Source Intelligence"
 }
