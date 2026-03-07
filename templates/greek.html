@@ -16,6 +16,13 @@ justify-content:center;
 align-items:center;
 height:100vh;
 font-family:Arial;
+color:white;
+overflow:hidden;
+}
+
+svg{
+width:90vmin;
+height:90vmin;
 }
 
 .node{
@@ -27,6 +34,31 @@ fill:white;
 font-size:14px;
 text-anchor:middle;
 dominant-baseline:middle;
+pointer-events:none;
+}
+
+line{
+stroke:gold;
+stroke-width:1;
+opacity:0.6;
+}
+
+.outerCircle{
+stroke:gold;
+stroke-width:1;
+fill:none;
+}
+
+.godCircle{
+stroke:gold;
+stroke-width:1;
+fill:black;
+}
+
+.centerCircle{
+stroke:gold;
+stroke-width:2;
+fill:black;
 }
 
 </style>
@@ -35,82 +67,111 @@ dominant-baseline:middle;
 
 <body>
 
-<svg width="700" height="700" viewBox="0 0 700 700">
+<svg viewBox="0 0 800 800">
 
-<!-- geometry circle -->
+<!-- Outer sacred circle -->
 
-<circle cx="350" cy="350" r="260" stroke="gold" fill="none"/>
+<circle class="outerCircle" cx="400" cy="400" r="320"/>
 
-<!-- center chaos -->
+<!-- Sacred cross geometry -->
+
+<line x1="400" y1="80" x2="400" y2="720"/>
+<line x1="80" y1="400" x2="720" y2="400"/>
+
+<!-- Diagonal sacred lines -->
+
+<line x1="160" y1="160" x2="640" y2="640"/>
+<line x1="640" y1="160" x2="160" y2="640"/>
+
+<!-- CENTER CHAOS -->
 
 <g class="node" onclick="selectEntity('CHAOS')">
-
-<circle cx="350" cy="350" r="40" stroke="gold" fill="black"/>
-
-<text x="350" y="350">CHAOS</text>
-
+<circle class="centerCircle" cx="400" cy="400" r="55"/>
+<text x="400" y="400">CHAOS</text>
 </g>
 
-<!-- outer gods -->
+<!-- 1 CREATOR — ZEUS -->
 
 <g class="node" onclick="selectEntity('ZEUS')">
-<circle cx="350" cy="90" r="30" stroke="gold" fill="black"/>
-<text x="350" y="90">ZEUS</text>
+<circle class="godCircle" cx="400" cy="90" r="32"/>
+<text x="400" y="90">ZEUS</text>
 </g>
+
+<!-- 2 ORDER — HERA -->
 
 <g class="node" onclick="selectEntity('HERA')">
-<circle cx="520" cy="160" r="30" stroke="gold" fill="black"/>
-<text x="520" y="160">HERA</text>
+<circle class="godCircle" cx="600" cy="170" r="32"/>
+<text x="600" y="170">HERA</text>
 </g>
+
+<!-- 3 KNOWLEDGE — ATHENA -->
 
 <g class="node" onclick="selectEntity('ATHENA')">
-<circle cx="610" cy="310" r="30" stroke="gold" fill="black"/>
-<text x="610" y="310">ATHENA</text>
+<circle class="godCircle" cx="710" cy="340" r="32"/>
+<text x="710" y="340">ATHENA</text>
 </g>
+
+<!-- 4 TIME — KRONOS -->
 
 <g class="node" onclick="selectEntity('KRONOS')">
-<circle cx="580" cy="470" r="30" stroke="gold" fill="black"/>
-<text x="580" y="470">KRONOS</text>
+<circle class="godCircle" cx="660" cy="540" r="32"/>
+<text x="660" y="540">KRONOS</text>
 </g>
+
+<!-- 5 LIFE — DEMETER -->
 
 <g class="node" onclick="selectEntity('DEMETER')">
-<circle cx="470" cy="580" r="30" stroke="gold" fill="black"/>
-<text x="470" y="580">DEMETER</text>
+<circle class="godCircle" cx="520" cy="680" r="32"/>
+<text x="520" y="680">DEMETER</text>
 </g>
+
+<!-- 6 DEATH — HADES -->
 
 <g class="node" onclick="selectEntity('HADES')">
-<circle cx="350" cy="610" r="30" stroke="gold" fill="black"/>
-<text x="350" y="610">HADES</text>
+<circle class="godCircle" cx="400" cy="720" r="32"/>
+<text x="400" y="720">HADES</text>
 </g>
+
+<!-- 7 BALANCE — ARTEMIS -->
 
 <g class="node" onclick="selectEntity('ARTEMIS')">
-<circle cx="230" cy="580" r="30" stroke="gold" fill="black"/>
-<text x="230" y="580">ARTEMIS</text>
+<circle class="godCircle" cx="280" cy="680" r="32"/>
+<text x="280" y="680">ARTEMIS</text>
 </g>
+
+<!-- 8 TRANSFORMATION — DIONYSUS -->
 
 <g class="node" onclick="selectEntity('DIONYSUS')">
-<circle cx="120" cy="470" r="30" stroke="gold" fill="black"/>
-<text x="120" y="470">DIONYSUS</text>
+<circle class="godCircle" cx="140" cy="540" r="32"/>
+<text x="140" y="540">DIONYSUS</text>
 </g>
+
+<!-- 9 PROTECTION — ARES -->
 
 <g class="node" onclick="selectEntity('ARES')">
-<circle cx="90" cy="310" r="30" stroke="gold" fill="black"/>
-<text x="90" y="310">ARES</text>
+<circle class="godCircle" cx="90" cy="340" r="32"/>
+<text x="90" y="340">ARES</text>
 </g>
+
+<!-- 10 POWER — POSEIDON -->
 
 <g class="node" onclick="selectEntity('POSEIDON')">
-<circle cx="180" cy="160" r="30" stroke="gold" fill="black"/>
-<text x="180" y="160">POSEIDON</text>
+<circle class="godCircle" cx="200" cy="170" r="32"/>
+<text x="200" y="170">POSEIDON</text>
 </g>
+
+<!-- 11 AWAKENING — APOLLO -->
 
 <g class="node" onclick="selectEntity('APOLLO')">
-<circle cx="260" cy="100" r="30" stroke="gold" fill="black"/>
-<text x="260" y="100">APOLLO</text>
+<circle class="godCircle" cx="310" cy="90" r="32"/>
+<text x="310" y="90">APOLLO</text>
 </g>
 
+<!-- 12 TRANSCENDENCE — HERMES -->
+
 <g class="node" onclick="selectEntity('HERMES')">
-<circle cx="440" cy="100" r="30" stroke="gold" fill="black"/>
-<text x="440" y="100">HERMES</text>
+<circle class="godCircle" cx="490" cy="90" r="32"/>
+<text x="490" y="90">HERMES</text>
 </g>
 
 </svg>
