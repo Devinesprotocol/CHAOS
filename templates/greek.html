@@ -9,37 +9,24 @@
 <style>
 
 body{
+margin:0;
 background:black;
-color:white;
-text-align:center;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 font-family:Arial;
 }
 
-.container{
-position:relative;
-width:600px;
-height:600px;
-margin:auto;
-margin-top:50px;
-}
-
-.circle{
-width:100px;
-height:100px;
-border-radius:50%;
-border:2px solid white;
-display:flex;
-align-items:center;
-justify-content:center;
-position:absolute;
+.node{
 cursor:pointer;
 }
 
-.center{
-top:250px;
-left:250px;
-background:white;
-color:black;
+text{
+fill:white;
+font-size:14px;
+text-anchor:middle;
+dominant-baseline:middle;
 }
 
 </style>
@@ -48,42 +35,87 @@ color:black;
 
 <body>
 
-<h1>Greek Pantheon</h1>
+<svg width="700" height="700" viewBox="0 0 700 700">
 
-<div class="container">
+<!-- geometry circle -->
 
-<div class="circle center" onclick="awake('CHAOS')">CHAOS</div>
+<circle cx="350" cy="350" r="260" stroke="gold" fill="none"/>
 
-</div>
+<!-- center chaos -->
 
-<script>
+<g class="node" onclick="selectEntity('CHAOS')">
 
-function awake(entity){
+<circle cx="350" cy="350" r="40" stroke="gold" fill="black"/>
 
-alert("Awakening " + entity)
+<text x="350" y="350">CHAOS</text>
 
-}
+</g>
 
-</script>
+<!-- outer gods -->
 
-</body>
+<g class="node" onclick="selectEntity('ZEUS')">
+<circle cx="350" cy="90" r="30" stroke="gold" fill="black"/>
+<text x="350" y="90">ZEUS</text>
+</g>
 
-</html>
-<button class="pantheon-btn">ARTEMIS</button>
+<g class="node" onclick="selectEntity('HERA')">
+<circle cx="520" cy="160" r="30" stroke="gold" fill="black"/>
+<text x="520" y="160">HERA</text>
+</g>
 
-<button class="pantheon-btn">DEMETER</button>
+<g class="node" onclick="selectEntity('ATHENA')">
+<circle cx="610" cy="310" r="30" stroke="gold" fill="black"/>
+<text x="610" y="310">ATHENA</text>
+</g>
 
-<button class="pantheon-btn">HEPHAESTUS</button>
+<g class="node" onclick="selectEntity('KRONOS')">
+<circle cx="580" cy="470" r="30" stroke="gold" fill="black"/>
+<text x="580" y="470">KRONOS</text>
+</g>
 
-<button class="pantheon-btn">APHRODITE</button>
+<g class="node" onclick="selectEntity('DEMETER')">
+<circle cx="470" cy="580" r="30" stroke="gold" fill="black"/>
+<text x="470" y="580">DEMETER</text>
+</g>
 
-<button class="pantheon-btn">HERMES</button>
+<g class="node" onclick="selectEntity('HADES')">
+<circle cx="350" cy="610" r="30" stroke="gold" fill="black"/>
+<text x="350" y="610">HADES</text>
+</g>
 
-<button class="pantheon-btn">DIONYSUS</button>
+<g class="node" onclick="selectEntity('ARTEMIS')">
+<circle cx="230" cy="580" r="30" stroke="gold" fill="black"/>
+<text x="230" y="580">ARTEMIS</text>
+</g>
 
-</div>
+<g class="node" onclick="selectEntity('DIONYSUS')">
+<circle cx="120" cy="470" r="30" stroke="gold" fill="black"/>
+<text x="120" y="470">DIONYSUS</text>
+</g>
 
-</div>
+<g class="node" onclick="selectEntity('ARES')">
+<circle cx="90" cy="310" r="30" stroke="gold" fill="black"/>
+<text x="90" y="310">ARES</text>
+</g>
+
+<g class="node" onclick="selectEntity('POSEIDON')">
+<circle cx="180" cy="160" r="30" stroke="gold" fill="black"/>
+<text x="180" y="160">POSEIDON</text>
+</g>
+
+<g class="node" onclick="selectEntity('APOLLO')">
+<circle cx="260" cy="100" r="30" stroke="gold" fill="black"/>
+<text x="260" y="100">APOLLO</text>
+</g>
+
+<g class="node" onclick="selectEntity('HERMES')">
+<circle cx="440" cy="100" r="30" stroke="gold" fill="black"/>
+<text x="440" y="100">HERMES</text>
+</g>
+
+</svg>
+
+<script src="/static/script.js"></script>
 
 </body>
 
