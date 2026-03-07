@@ -1,4 +1,5 @@
 import json
+import yaml
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,19 +15,19 @@ def load_entity(pantheon, entity_name):
         "pantheon": pantheon
     }
 
-    # Load identity if exists
+    # identity
     identity_file = entity_dir / "identity.json"
     if identity_file.exists():
         with open(identity_file) as f:
             entity["identity"] = json.load(f)
 
-    # Load config if exists
-    config_file = entity_dir / "config.json"
+    # config (yaml)
+    config_file = entity_dir / "config.yaml"
     if config_file.exists():
         with open(config_file) as f:
-            entity["config"] = json.load(f)
+            entity["config"] = yaml.safe_load(f)
 
-    # Load relationships if exists
+    # relationships
     rel_file = entity_dir / "relationships.json"
     if rel_file.exists():
         with open(rel_file) as f:
