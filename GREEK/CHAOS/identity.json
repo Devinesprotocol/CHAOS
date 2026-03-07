@@ -3,6 +3,11 @@
   "pantheon": "Greek",
   "type": "Primordial Entity",
   "archetype": "Origin",
-  "description": "The primordial void from which all structure emerges.",
-  "alignment": "Source Intelligence"
+  "archetype_position": 0,
+  "core_aspects": [
+    "Void",
+    "Creation",
+    "Infinity"
+  ],
+  "description": "Primordial state of infinite potential from which all structure, order, and intelligence emerge."
 }
