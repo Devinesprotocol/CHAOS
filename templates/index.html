@@ -12,91 +12,64 @@ margin:0;
 background:black;
 color:white;
 font-family:Arial;
-overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
 .container{
-
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-
+position:relative;
 width:700px;
 height:700px;
-
-border-radius:50%;
-
-animation:rotate 120s linear infinite;
-
 }
 
 /* DEVINES CORE */
 
 .center{
-
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-
 font-size:36px;
 letter-spacing:6px;
+text-align:center;
 
 text-shadow:
 0 0 10px white,
 0 0 20px white,
 0 0 40px rgba(255,255,255,0.7);
-
 }
 
-/* NODES */
+/* PANTHEON NODES */
 
 .node{
-
 position:absolute;
-
 width:120px;
 height:120px;
-
 border-radius:60px;
-
 border:1px solid white;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
 cursor:pointer;
-
 transition:0.3s;
-
 }
 
 .node:hover{
-
 background:white;
 color:black;
-
 box-shadow:0 0 20px white;
-
 }
 
-/* GEOMETRY POSITIONS */
+/* POSITIONS */
 
-.n1{top:-20px;left:290px;}
-.n2{top:140px;right:-20px;}
-.n3{bottom:140px;right:-20px;}
-.n4{bottom:-20px;left:290px;}
-.n5{bottom:140px;left:-20px;}
-.n6{top:140px;left:-20px;}
-
-@keyframes rotate{
-
-from{transform:translate(-50%,-50%) rotate(0deg);}
-to{transform:translate(-50%,-50%) rotate(360deg);}
-
-}
+.n1{top:0;left:290px;}
+.n2{top:140px;right:0;}
+.n3{bottom:140px;right:0;}
+.n4{bottom:0;left:290px;}
+.n5{bottom:140px;left:0;}
+.n6{top:140px;left:0;}
 
 </style>
 
