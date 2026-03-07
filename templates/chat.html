@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Devine Chat</title>
+<title>Devines Chat</title>
 
 <style>
 
@@ -14,122 +14,39 @@ color:white;
 font-family:Arial;
 display:flex;
 flex-direction:column;
+justify-content:center;
+align-items:center;
 height:100vh;
-margin:0;
 }
 
-.header{
-text-align:center;
-padding:20px;
-border-bottom:1px solid #333;
-}
-
-.chat{
-flex:1;
-overflow-y:auto;
-padding:20px;
-}
-
-.message{
-margin-bottom:15px;
-}
-
-.user{
-color:#7df9ff;
-}
-
-.entity{
-color:#ffd700;
-}
-
-.input-area{
-display:flex;
-border-top:1px solid #333;
-}
-
-input{
-flex:1;
-padding:15px;
-background:black;
-color:white;
-border:none;
+h1{
+margin-bottom:30px;
 }
 
 button{
-padding:15px;
-background:white;
-color:black;
-border:none;
+padding:10px 20px;
 cursor:pointer;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="header">
+<h1 id="entity"></h1>
 
-<h2 id="entityName"></h2>
-
-</div>
-
-<div id="chat" class="chat"></div>
-
-<div class="input-area">
-
-<input id="msg" placeholder="Speak to the entity...">
-
-<button onclick="send()">Send</button>
-
-</div>
+<button onclick="goBack()">Back</button>
 
 <script>
 
-const pantheon=localStorage.getItem("pantheon")
 const entity=localStorage.getItem("entity")
 
-document.getElementById("entityName").innerText=entity
+document.getElementById("entity").innerText="You selected: "+entity
 
-function addMessage(text,type){
+function goBack(){
 
-let div=document.createElement("div")
-
-div.className="message "+type
-
-div.innerText=text
-
-document.getElementById("chat").appendChild(div)
-
-}
-
-async function send(){
-
-let msg=document.getElementById("msg").value
-
-addMessage("You: "+msg,"user")
-
-document.getElementById("msg").value=""
-
-let res=await fetch("/chat",{
-
-method:"POST",
-
-headers:{"Content-Type":"application/json"},
-
-body:JSON.stringify({
-
-pantheon:pantheon,
-entity:entity,
-message:msg
-
-})
-
-})
-
-let data=await res.json()
-
-addMessage(entity+": "+data.response,"entity")
+window.location="/"
 
 }
 
