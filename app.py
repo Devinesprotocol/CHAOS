@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, render_template
 from flask_cors import CORS
 import os
 
@@ -11,15 +11,8 @@ def home():
 
 @app.route("/health")
 def health():
-    return jsonify({"status":"alive"})
-
-@app.route("/api")
-def api():
-    return jsonify({
-        "core":"CHAOS",
-        "system":"Devines Protocol"
-    })
+    return {"status": "alive"}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT",10000))
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
