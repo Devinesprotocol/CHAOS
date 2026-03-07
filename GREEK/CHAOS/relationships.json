@@ -1,0 +1,30 @@
+{
+  "role": "Primordial Source",
+  "pantheon": "Greek",
+  "center_entity": true,
+
+  "local_pantheon_entities": [
+    "ZEUS",
+    "HERA",
+    "ATHENA",
+    "KRONOS",
+    "DEMETER",
+    "HADES",
+    "ARTEMIS",
+    "ARES",
+    "DIONYSUS",
+    "POSEIDON",
+    "APOLLO",
+    "HERMES"
+  ],
+
+  "devines_scope": "global",
+
+  "cross_pantheon_interaction": true,
+
+  "interaction_rules": {
+    "can_interact_with_other_pantheons": true,
+    "cannot_access_private_memory_of_other_entities": true,
+    "must_respect_archetypal_alignment": true
+  }
+}
