@@ -1,58 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
-<title>Pantheon</title>
+<title>Pantheons</title>
 
 <style>
 
 body{
+margin:0;
 background:black;
-color:white;
-font-family:Arial;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-}
-
-.container{
-position:relative;
-width:700px;
-height:700px;
+font-family:Arial;
+color:white;
 }
 
 .node{
-position:absolute;
-width:100px;
-height:100px;
-border-radius:50%;
-border:1px solid white;
-display:flex;
-justify-content:center;
-align-items:center;
 cursor:pointer;
 }
 
-.node:hover{
-background:white;
-color:black;
-}
-
-.center{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:120px;
-height:120px;
-border-radius:60px;
-border:2px solid white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:bold;
+text{
+font-size:14px;
+fill:white;
+text-anchor:middle;
+dominant-baseline:middle;
 }
 
 </style>
@@ -61,58 +36,52 @@ font-weight:bold;
 
 <body>
 
-<div class="container">
+<svg width="700" height="700" viewBox="0 0 700 700">
 
-<div class="center" onclick="selectEntity('CHAOS')">CHAOS</div>
+<!-- Sacred geometry circle -->
 
-<script>
+<circle cx="350" cy="350" r="250" stroke="gold" stroke-width="1" fill="none"/>
 
-const gods=[
-"ZEUS","HERA","POSEIDON","DEMETER",
-"ATHENA","APOLLO","ARTEMIS","ARES",
-"APHRODITE","HEPHAESTUS","HERMES","DIONYSUS"
-]
+<!-- center -->
 
-const container=document.querySelector(".container")
+<circle cx="350" cy="350" r="40" fill="black" stroke="gold"/>
+<text x="350" y="350">DEVINES</text>
 
-gods.forEach((god,i)=>{
+<!-- pantheon nodes -->
 
-let angle=i*(360/gods.length)
+<g class="node" onclick="selectPantheon('greek')">
+<circle cx="350" cy="100" r="35" stroke="gold" fill="black"/>
+<text x="350" y="100">GREEK</text>
+</g>
 
-let radius=280
+<g class="node" onclick="selectPantheon('egypt')">
+<circle cx="560" cy="230" r="35" stroke="gold" fill="black"/>
+<text x="560" y="230">EGYPT</text>
+</g>
 
-let centerX=350
-let centerY=350
+<g class="node" onclick="selectPantheon('chinese')">
+<circle cx="560" cy="470" r="35" stroke="gold" fill="black"/>
+<text x="560" y="470">CHINESE</text>
+</g>
 
-let x=centerX+radius*Math.cos(angle*Math.PI/180)-50
-let y=centerY+radius*Math.sin(angle*Math.PI/180)-50
+<g class="node" onclick="selectPantheon('vedic')">
+<circle cx="350" cy="600" r="35" stroke="gold" fill="black"/>
+<text x="350" y="600">VEDIC</text>
+</g>
 
-let node=document.createElement("div")
+<g class="node" onclick="selectPantheon('sumerian')">
+<circle cx="140" cy="470" r="35" stroke="gold" fill="black"/>
+<text x="140" y="470">SUMER</text>
+</g>
 
-node.className="node"
+<g class="node" onclick="selectPantheon('nordic')">
+<circle cx="140" cy="230" r="35" stroke="gold" fill="black"/>
+<text x="140" y="230">NORDIC</text>
+</g>
 
-node.style.left=x+"px"
-node.style.top=y+"px"
+</svg>
 
-node.innerText=god
-
-node.onclick=()=>selectEntity(god)
-
-container.appendChild(node)
-
-})
-
-function selectEntity(name){
-
-localStorage.setItem("entity",name)
-
-window.location="/chat"
-
-}
-
-</script>
-
-</div>
+<script src="/static/script.js"></script>
 
 </body>
 </html>
