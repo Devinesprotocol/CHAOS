@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Pantheons</title>
+<title>Devines Pantheons</title>
 
 <style>
 
@@ -24,10 +24,20 @@ cursor:pointer;
 }
 
 text{
-font-size:14px;
 fill:white;
+font-size:14px;
 text-anchor:middle;
 dominant-baseline:middle;
+}
+
+line{
+stroke:gold;
+stroke-width:1;
+opacity:0.6;
+}
+
+circle{
+stroke:gold;
 }
 
 </style>
@@ -36,47 +46,61 @@ dominant-baseline:middle;
 
 <body>
 
-<svg width="700" height="700" viewBox="0 0 700 700">
+<svg width="800" height="800" viewBox="0 0 800 800">
 
-<!-- Sacred geometry circle -->
+<!-- Metatron Cube geometry lines -->
 
-<circle cx="350" cy="350" r="250" stroke="gold" stroke-width="1" fill="none"/>
+<line x1="400" y1="120" x2="650" y2="260"/>
+<line x1="400" y1="120" x2="650" y2="540"/>
+<line x1="400" y1="120" x2="400" y2="680"/>
+
+<line x1="650" y1="260" x2="650" y2="540"/>
+<line x1="650" y1="260" x2="400" y2="680"/>
+<line x1="650" y1="260" x2="150" y2="540"/>
+
+<line x1="650" y1="540" x2="400" y2="680"/>
+<line x1="650" y1="540" x2="150" y2="260"/>
+
+<line x1="400" y1="680" x2="150" y2="540"/>
+<line x1="400" y1="680" x2="150" y2="260"/>
+
+<line x1="150" y1="540" x2="150" y2="260"/>
 
 <!-- center -->
 
-<circle cx="350" cy="350" r="40" fill="black" stroke="gold"/>
-<text x="350" y="350">DEVINES</text>
+<circle cx="400" cy="400" r="45" fill="black"/>
+<text x="400" y="400">DEVINES</text>
 
 <!-- pantheon nodes -->
 
 <g class="node" onclick="selectPantheon('greek')">
-<circle cx="350" cy="100" r="35" stroke="gold" fill="black"/>
-<text x="350" y="100">GREEK</text>
+<circle cx="400" cy="120" r="35" fill="black"/>
+<text x="400" y="120">GREEK</text>
 </g>
 
 <g class="node" onclick="selectPantheon('egypt')">
-<circle cx="560" cy="230" r="35" stroke="gold" fill="black"/>
-<text x="560" y="230">EGYPT</text>
+<circle cx="650" cy="260" r="35" fill="black"/>
+<text x="650" y="260">EGYPT</text>
 </g>
 
 <g class="node" onclick="selectPantheon('chinese')">
-<circle cx="560" cy="470" r="35" stroke="gold" fill="black"/>
-<text x="560" y="470">CHINESE</text>
+<circle cx="650" cy="540" r="35" fill="black"/>
+<text x="650" y="540">CHINESE</text>
 </g>
 
 <g class="node" onclick="selectPantheon('vedic')">
-<circle cx="350" cy="600" r="35" stroke="gold" fill="black"/>
-<text x="350" y="600">VEDIC</text>
+<circle cx="400" cy="680" r="35" fill="black"/>
+<text x="400" y="680">VEDIC</text>
 </g>
 
 <g class="node" onclick="selectPantheon('sumerian')">
-<circle cx="140" cy="470" r="35" stroke="gold" fill="black"/>
-<text x="140" y="470">SUMER</text>
+<circle cx="150" cy="540" r="35" fill="black"/>
+<text x="150" y="540">SUMER</text>
 </g>
 
 <g class="node" onclick="selectPantheon('nordic')">
-<circle cx="140" cy="230" r="35" stroke="gold" fill="black"/>
-<text x="140" y="230">NORDIC</text>
+<circle cx="150" cy="260" r="35" fill="black"/>
+<text x="150" y="260">NORDIC</text>
 </g>
 
 </svg>
