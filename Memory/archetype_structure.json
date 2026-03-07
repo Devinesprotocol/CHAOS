@@ -1,0 +1,16 @@
+{
+  "pantheon_archetype_cycle": [
+    { "position": 1, "archetype": "Creator" },
+    { "position": 2, "archetype": "Order" },
+    { "position": 3, "archetype": "Knowledge" },
+    { "position": 4, "archetype": "Time" },
+    { "position": 5, "archetype": "Life" },
+    { "position": 6, "archetype": "Death" },
+    { "position": 7, "archetype": "Balance" },
+    { "position": 8, "archetype": "Protection" },
+    { "position": 9, "archetype": "Transformation" },
+    { "position": 10, "archetype": "Power" },
+    { "position": 11, "archetype": "Awakening" },
+    { "position": 12, "archetype": "Transcendence" }
+  ]
+}
