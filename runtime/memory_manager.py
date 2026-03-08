@@ -5,14 +5,11 @@ from cryptography.fernet import Fernet
 
 class MemoryManager:
     """
-    Privacy-safe encrypted memory manager for a single entity.
+    Privacy-safe encrypted memory manager for a single being.
 
-    Rules:
-    - Only accesses the current entity_path memory folder
-    - Does not read other entities' memory
-    - Stores chat history in history.enc
-    - Keeps reflections and knowledge in separate encrypted files
-    - Can optionally read/write the Devines collective mind
+    Key priority:
+    1. CHAOS_MEMORY_KEY from environment
+    2. local fallback file (for development only)
     """
 
     def __init__(self, entity_path, shared_memory_path=None):
@@ -35,6 +32,11 @@ class MemoryManager:
         self.fernet = self._load_or_create_key()
 
     def _load_or_create_key(self):
+        env_key = os.environ.get("CHAOS_MEMORY_KEY")
+
+        if env_key:
+            return Fernet(env_key.encode("utf-8"))
+
         if os.path.exists(self.key_path):
             with open(self.key_path, "rb") as f:
                 key = f.read()
@@ -73,12 +75,10 @@ class MemoryManager:
 
     def store_history_message(self, role, message):
         history = self._load_and_decrypt(self.history_file, default=[])
-
         history.append({
             "role": role,
             "content": message
         })
-
         history = history[-40:]
         self._encrypt_and_store(self.history_file, history)
 
@@ -87,12 +87,10 @@ class MemoryManager:
 
     def store_reflection(self, reflection):
         reflections = self._load_and_decrypt(self.reflections_file, default=[])
-
         reflections.append({
             "type": "reflection",
             "content": reflection
         })
-
         self._encrypt_and_store(self.reflections_file, reflections)
 
     def get_reflections(self):
