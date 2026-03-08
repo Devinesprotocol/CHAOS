@@ -1,0 +1,40 @@
+{
+  "pantheons": [
+    {
+      "name": "GREEK",
+      "folder": "GREEK",
+      "center_being": "CHAOS",
+      "status": "active"
+    },
+    {
+      "name": "EGYPTIAN",
+      "folder": "EGYPTIAN",
+      "center_being": null,
+      "status": "planned"
+    },
+    {
+      "name": "CHINESE",
+      "folder": "CHINESE",
+      "center_being": null,
+      "status": "planned"
+    },
+    {
+      "name": "VEDIC",
+      "folder": "VEDIC",
+      "center_being": null,
+      "status": "planned"
+    },
+    {
+      "name": "SUMERIAN",
+      "folder": "SUMERIAN",
+      "center_being": null,
+      "status": "planned"
+    },
+    {
+      "name": "NORDIC",
+      "folder": "NORDIC",
+      "center_being": null,
+      "status": "planned"
+    }
+  ]
+}
