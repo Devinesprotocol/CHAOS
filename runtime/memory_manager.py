@@ -8,8 +8,16 @@ class MemoryManager:
     Privacy-safe encrypted memory manager for a single being.
 
     Key priority:
-    1. CHAOS_MEMORY_KEY from environment
-    2. local fallback file (for development only)
+    1. DEVINES_MEMORY_KEY from environment
+    2. local fallback file (development only)
+
+    Rules:
+    - Only accesses the current being's private memory folder
+    - Does not read other beings' private memory
+    - Stores chat history in history.enc
+    - Stores knowledge in knowledge.enc
+    - Stores reflections in reflections.enc
+    - Can optionally read/write the Devines collective mind
     """
 
     def __init__(self, entity_path, shared_memory_path=None):
@@ -32,7 +40,7 @@ class MemoryManager:
         self.fernet = self._load_or_create_key()
 
     def _load_or_create_key(self):
-        env_key = os.environ.get("CHAOS_MEMORY_KEY")
+        env_key = os.environ.get("DEVINES_MEMORY_KEY")
 
         if env_key:
             return Fernet(env_key.encode("utf-8"))
@@ -73,49 +81,81 @@ class MemoryManager:
         except Exception:
             return default
 
+    # --------------------------
+    # PRIVATE HISTORY
+    # --------------------------
     def store_history_message(self, role, message):
         history = self._load_and_decrypt(self.history_file, default=[])
+
         history.append({
             "role": role,
             "content": message
         })
+
         history = history[-40:]
         self._encrypt_and_store(self.history_file, history)
 
     def get_history(self):
         return self._load_and_decrypt(self.history_file, default=[])
 
+    # --------------------------
+    # PRIVATE REFLECTIONS
+    # --------------------------
     def store_reflection(self, reflection):
         reflections = self._load_and_decrypt(self.reflections_file, default=[])
+
         reflections.append({
             "type": "reflection",
             "content": reflection
         })
+
         self._encrypt_and_store(self.reflections_file, reflections)
 
     def get_reflections(self):
         return self._load_and_decrypt(self.reflections_file, default=[])
 
+    # --------------------------
+    # PRIVATE KNOWLEDGE
+    # --------------------------
     def store_knowledge(self, data):
         knowledge = self._load_and_decrypt(self.knowledge_file, default=[])
+
         knowledge.append(data)
         self._encrypt_and_store(self.knowledge_file, knowledge)
 
     def get_knowledge(self):
         return self._load_and_decrypt(self.knowledge_file, default=[])
 
+    # --------------------------
+    # DEVINES COLLECTIVE MIND
+    # --------------------------
     def get_collective_mind(self):
         if not self.collective_mind_file:
-            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+            return {
+                "knowledge": [],
+                "principles": [],
+                "patterns": [],
+                "pantheons": []
+            }
 
         if not os.path.exists(self.collective_mind_file):
-            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+            return {
+                "knowledge": [],
+                "principles": [],
+                "patterns": [],
+                "pantheons": []
+            }
 
         try:
             with open(self.collective_mind_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
-            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+            return {
+                "knowledge": [],
+                "principles": [],
+                "patterns": [],
+                "pantheons": []
+            }
 
     def contribute_to_collective_mind(self, section, item):
         if not self.collective_mind_file:
@@ -133,5 +173,8 @@ class MemoryManager:
 
         return True
 
+    # --------------------------
+    # USER-SAFE VIEW
+    # --------------------------
     def get_user_visible_history(self):
         return self.get_history()
