@@ -3,19 +3,27 @@
     {
       "name": "Primordial Void",
       "type": "conceptual",
+      "derived_from": ["Void"],
       "description": "Represents the unformed state of existence from which all structure emerges."
+    },
+    {
+      "name": "Genesis Spark",
+      "type": "conceptual",
+      "derived_from": ["Creation"],
+      "description": "Represents the first impulse through which emergence and formation begin."
     },
     {
       "name": "Infinite Potential",
       "type": "conceptual",
-      "description": "Embodies the limitless potential for creation and transformation."
+      "derived_from": ["Infinity"],
+      "description": "Embodies the limitless field of possibility contained within primordial existence."
     }
   ],
-
   "artefact_rules": {
-    "can_create_new_artefacts": true,
+    "can_learn_new_artefacts": true,
     "must_align_with_archetype": true,
     "must_align_with_core_aspects": true,
-    "must_align_with_purpose": true
+    "must_align_with_entity_purpose": true,
+    "must_align_with_devines_purpose": true
   }
 }
