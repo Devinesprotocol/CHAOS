@@ -13,6 +13,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/pantheon")
+def pantheon():
+    return render_template("pantheon.html")
+
+
 @app.route("/pantheon/greek")
 def greek():
     return render_template("greek.html")
@@ -46,6 +51,13 @@ def chat():
         return jsonify({
             "error": str(e)
         }), 500
+
+
+@app.route("/health")
+def health():
+    return jsonify({
+        "status": "ok"
+    }), 200
 
 
 if __name__ == "__main__":
