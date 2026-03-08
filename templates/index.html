@@ -17,54 +17,63 @@ body{
     font-family:Arial, sans-serif;
 }
 
-svg{
+#gateway{
     width:70vmin;
     height:70vmin;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+svg{
+    width:100%;
+    height:100%;
 }
 
 #triangle{
-    cursor:pointer;
-    transition:transform 0.3s ease;
+    transition:transform 0.25s ease;
+    transform-origin:center;
 }
 
-#triangle:hover{
-    transform:scale(1.04);
+#gateway:active #triangle{
+    transform:scale(1.03);
 }
 </style>
 </head>
 
 <body>
 
-<svg viewBox="0 0 400 400">
+<div id="gateway" onclick="enterDevines()" ontouchstart="enterDevines()">
+    <svg viewBox="0 0 400 400" aria-label="Enter Devines">
 
-    <defs>
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="6" result="blur"/>
-            <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-        </filter>
-    </defs>
+        <defs>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="6" result="blur"/>
+                <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
 
-    <polygon
-        id="triangle"
-        points="200,60 340,300 60,300"
-        stroke="white"
-        stroke-width="6"
-        fill="none"
-        filter="url(#glow)"
-        onclick="enterDevines()"
-    />
+        <!-- invisible large hit area -->
+        <rect x="40" y="40" width="320" height="280" fill="transparent"></rect>
 
-</svg>
+        <polygon
+            id="triangle"
+            points="200,60 340,300 60,300"
+            stroke="white"
+            stroke-width="6"
+            fill="none"
+            filter="url(#glow)"
+        />
+    </svg>
+</div>
 
 <script>
+let entered = false;
+
 function enterDevines(){
-    window.location.href = "/pantheon";
-}
-</script>
-
-</body>
-
-</html>
+    if
