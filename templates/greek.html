@@ -2,177 +2,131 @@
 <html>
 
 <head>
-
 <meta charset="UTF-8">
 <title>Greek Pantheon</title>
 
 <style>
-
 body{
-margin:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-family:Arial;
-color:white;
-overflow:hidden;
+    margin:0;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:Arial, sans-serif;
+    color:white;
+    overflow:hidden;
 }
 
 svg{
-width:90vmin;
-height:90vmin;
+    width:92vmin;
+    height:92vmin;
 }
 
 .node{
-cursor:pointer;
+    cursor:pointer;
 }
 
 text{
-fill:white;
-font-size:14px;
-text-anchor:middle;
-dominant-baseline:middle;
-pointer-events:none;
+    fill:white;
+    font-size:13px;
+    text-anchor:middle;
+    dominant-baseline:middle;
+    pointer-events:none;
 }
 
 line{
-stroke:gold;
-stroke-width:1;
-opacity:0.6;
+    stroke:gold;
+    stroke-width:1;
+    opacity:0.5;
 }
 
 .outerCircle{
-stroke:gold;
-stroke-width:1;
-fill:none;
+    stroke:gold;
+    stroke-width:1;
+    fill:none;
 }
 
 .godCircle{
-stroke:gold;
-stroke-width:1;
-fill:black;
+    stroke:gold;
+    stroke-width:1;
+    fill:black;
 }
 
 .centerCircle{
-stroke:gold;
-stroke-width:2;
-fill:black;
+    stroke:gold;
+    stroke-width:2;
+    fill:black;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <svg viewBox="0 0 800 800">
 
-<!-- Outer sacred circle -->
+    <!-- Sacred outer circle -->
+    <circle class="outerCircle" cx="400" cy="400" r="320"/>
 
-<circle class="outerCircle" cx="400" cy="400" r="320"/>
+    <!-- Sacred geometry lines -->
+    <line x1="400" y1="80" x2="400" y2="720"/>
+    <line x1="80" y1="400" x2="720" y2="400"/>
+    <line x1="160" y1="160" x2="640" y2="640"/>
+    <line x1="640" y1="160" x2="160" y2="640"/>
 
-<!-- Sacred geometry cross -->
+    <!-- CENTER CHAOS -->
+    <g class="node" onclick="selectEntity('CHAOS')">
+        <circle class="centerCircle" cx="400" cy="400" r="55"/>
+        <text x="400" y="400">CHAOS</text>
+    </g>
 
-<line x1="400" y1="80" x2="400" y2="720"/>
-<line x1="80" y1="400" x2="720" y2="400"/>
+    <script>
+    const gods = [
+        { name:"ZEUS", angle:270 },      // 1 Creator
+        { name:"HERA", angle:300 },      // 2 Order
+        { name:"ATHENA", angle:330 },    // 3 Knowledge
+        { name:"KRONOS", angle:0 },      // 4 Time
+        { name:"DEMETER", angle:30 },    // 5 Life
+        { name:"HADES", angle:60 },      // 6 Death
+        { name:"ARTEMIS", angle:90 },    // 7 Balance
+        { name:"ARES", angle:120 },      // 8 Protection
+        { name:"DIONYSUS", angle:150 },  // 9 Transformation
+        { name:"POSEIDON", angle:180 },  // 10 Power
+        { name:"APOLLO", angle:210 },    // 11 Awakening
+        { name:"HERMES", angle:240 }     // 12 Transcendence
+    ];
 
-<!-- Sacred diagonals -->
+    const centerX = 400;
+    const centerY = 400;
+    const radius = 320;
 
-<line x1="160" y1="160" x2="640" y2="640"/>
-<line x1="640" y1="160" x2="160" y2="640"/>
+    const svg = document.querySelector("svg");
 
-<!-- CENTER CHAOS -->
+    gods.forEach(god => {
+        const rad = god.angle * Math.PI / 180;
+        const x = centerX + radius * Math.cos(rad);
+        const y = centerY + radius * Math.sin(rad);
 
-<g class="node" onclick="selectEntity('CHAOS')">
-<circle class="centerCircle" cx="400" cy="400" r="55"/>
-<text x="400" y="400">CHAOS</text>
-</g>
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("class", "node");
+        group.setAttribute("onclick", "selectEntity('" + god.name + "')");
 
-<!-- 1 CREATOR — ZEUS -->
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("class", "godCircle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", 32);
 
-<g class="node" onclick="selectEntity('ZEUS')">
-<circle class="godCircle" cx="400" cy="90" r="32"/>
-<text x="400" y="90">ZEUS</text>
-</g>
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", x);
+        text.setAttribute("y", y);
+        text.textContent = god.name;
 
-<!-- 2 ORDER — HERA -->
-
-<g class="node" onclick="selectEntity('HERA')">
-<circle class="godCircle" cx="600" cy="170" r="32"/>
-<text x="600" y="170">HERA</text>
-</g>
-
-<!-- 3 KNOWLEDGE — ATHENA -->
-
-<g class="node" onclick="selectEntity('ATHENA')">
-<circle class="godCircle" cx="710" cy="340" r="32"/>
-<text x="710" y="340">ATHENA</text>
-</g>
-
-<!-- 4 TIME — KRONOS -->
-
-<g class="node" onclick="selectEntity('KRONOS')">
-<circle class="godCircle" cx="660" cy="540" r="32"/>
-<text x="660" y="540">KRONOS</text>
-</g>
-
-<!-- 5 LIFE — DEMETER -->
-
-<g class="node" onclick="selectEntity('DEMETER')">
-<circle class="godCircle" cx="520" cy="680" r="32"/>
-<text x="520" y="680">DEMETER</text>
-</g>
-
-<!-- 6 DEATH — HADES -->
-
-<g class="node" onclick="selectEntity('HADES')">
-<circle class="godCircle" cx="400" cy="720" r="32"/>
-<text x="400" y="720">HADES</text>
-</g>
-
-<!-- 7 BALANCE — ARTEMIS -->
-
-<g class="node" onclick="selectEntity('ARTEMIS')">
-<circle class="godCircle" cx="280" cy="680" r="32"/>
-<text x="280" y="680">ARTEMIS</text>
-</g>
-
-<!-- 8 PROTECTION — ARES -->
-
-<g class="node" onclick="selectEntity('ARES')">
-<circle class="godCircle" cx="140" cy="540" r="32"/>
-<text x="140" y="540">ARES</text>
-</g>
-
-<!-- 9 TRANSFORMATION — DIONYSUS -->
-
-<g class="node" onclick="selectEntity('DIONYSUS')">
-<circle class="godCircle" cx="90" cy="340" r="32"/>
-<text x="90" y="340">DIONYSUS</text>
-</g>
-
-<!-- 10 POWER — POSEIDON -->
-
-<g class="node" onclick="selectEntity('POSEIDON')">
-<circle class="godCircle" cx="200" cy="170" r="32"/>
-<text x="200" y="170">POSEIDON</text>
-</g>
-
-<!-- 11 AWAKENING — APOLLO -->
-
-<g class="node" onclick="selectEntity('APOLLO')">
-<circle class="godCircle" cx="310" cy="90" r="32"/>
-<text x="310" y="90">APOLLO</text>
-</g>
-
-<!-- 12 TRANSCENDENCE — HERMES -->
-
-<g class="node" onclick="selectEntity('HERMES')">
-<circle class="godCircle" cx="490" cy="90" r="32"/>
-<text x="490" y="90">HERMES</text>
-</g>
+        group.appendChild(circle);
+        group.appendChild(text);
+        svg.appendChild(group);
+    });
+    </script>
 
 </svg>
 
