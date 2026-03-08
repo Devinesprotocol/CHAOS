@@ -1,0 +1,13 @@
+{
+  "entity_memory_is_private": true,
+  "cross_pantheon_interaction": true,
+  "cross_entity_private_memory_access": false,
+  "user_can_access_own_interaction_history": true,
+  "user_can_access_entity_private_memory": false,
+  "entities_share_collective_mind": true,
+  "collective_mind_allows_private_data": false,
+  "skills_must_align_with_archetype": true,
+  "skills_must_align_with_core_aspects": true,
+  "skills_must_align_with_entity_purpose": true,
+  "skills_must_align_with_devines_purpose": true
+}
