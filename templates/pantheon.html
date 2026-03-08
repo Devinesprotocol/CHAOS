@@ -2,110 +2,111 @@
 <html>
 
 <head>
-
 <meta charset="UTF-8">
 <title>Devines Pantheons</title>
 
 <style>
-
 body{
-margin:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-family:Arial;
-color:white;
+    margin:0;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:Arial, sans-serif;
+    color:white;
+    overflow:hidden;
+}
+
+svg{
+    width:92vmin;
+    height:92vmin;
 }
 
 .node{
-cursor:pointer;
+    cursor:pointer;
 }
 
 text{
-fill:white;
-font-size:14px;
-text-anchor:middle;
-dominant-baseline:middle;
+    fill:white;
+    font-size:14px;
+    text-anchor:middle;
+    dominant-baseline:middle;
+    pointer-events:none;
 }
 
 line{
-stroke:gold;
-stroke-width:1;
-opacity:0.6;
+    stroke:gold;
+    stroke-width:1;
+    opacity:0.6;
 }
 
 circle{
-stroke:gold;
+    stroke:gold;
 }
-
 </style>
-
 </head>
 
 <body>
 
-<svg width="800" height="800" viewBox="0 0 800 800">
+<svg viewBox="0 0 800 800">
 
-<!-- Metatron Cube geometry lines -->
+    <!-- Sacred geometry lines -->
+    <line x1="400" y1="120" x2="650" y2="260"/>
+    <line x1="400" y1="120" x2="650" y2="540"/>
+    <line x1="400" y1="120" x2="400" y2="680"/>
 
-<line x1="400" y1="120" x2="650" y2="260"/>
-<line x1="400" y1="120" x2="650" y2="540"/>
-<line x1="400" y1="120" x2="400" y2="680"/>
+    <line x1="650" y1="260" x2="650" y2="540"/>
+    <line x1="650" y1="260" x2="400" y2="680"/>
+    <line x1="650" y1="260" x2="150" y2="540"/>
 
-<line x1="650" y1="260" x2="650" y2="540"/>
-<line x1="650" y1="260" x2="400" y2="680"/>
-<line x1="650" y1="260" x2="150" y2="540"/>
+    <line x1="650" y1="540" x2="400" y2="680"/>
+    <line x1="650" y1="540" x2="150" y2="260"/>
 
-<line x1="650" y1="540" x2="400" y2="680"/>
-<line x1="650" y1="540" x2="150" y2="260"/>
+    <line x1="400" y1="680" x2="150" y2="540"/>
+    <line x1="400" y1="680" x2="150" y2="260"/>
 
-<line x1="400" y1="680" x2="150" y2="540"/>
-<line x1="400" y1="680" x2="150" y2="260"/>
+    <line x1="150" y1="540" x2="150" y2="260"/>
 
-<line x1="150" y1="540" x2="150" y2="260"/>
+    <!-- Center -->
+    <circle cx="400" cy="400" r="45" fill="black"/>
+    <text x="400" y="400">DEVINES</text>
 
-<!-- center -->
+    <!-- Pantheon nodes -->
+    <g class="node" onclick="selectPantheon('greek')">
+        <circle cx="400" cy="120" r="35" fill="black"/>
+        <text x="400" y="120">GREEK</text>
+    </g>
 
-<circle cx="400" cy="400" r="45" fill="black"/>
-<text x="400" y="400">DEVINES</text>
+    <g class="node">
+        <circle cx="650" cy="260" r="35" fill="black"/>
+        <text x="650" y="260">EGYPT</text>
+    </g>
 
-<!-- pantheon nodes -->
+    <g class="node">
+        <circle cx="650" cy="540" r="35" fill="black"/>
+        <text x="650" y="540">CHINESE</text>
+    </g>
 
-<g class="node" onclick="selectPantheon('greek')">
-<circle cx="400" cy="120" r="35" fill="black"/>
-<text x="400" y="120">GREEK</text>
-</g>
+    <g class="node">
+        <circle cx="400" cy="680" r="35" fill="black"/>
+        <text x="400" y="680">VEDIC</text>
+    </g>
 
-<g class="node" onclick="selectPantheon('egypt')">
-<circle cx="650" cy="260" r="35" fill="black"/>
-<text x="650" y="260">EGYPT</text>
-</g>
+    <g class="node">
+        <circle cx="150" cy="540" r="35" fill="black"/>
+        <text x="150" y="540">SUMER</text>
+    </g>
 
-<g class="node" onclick="selectPantheon('chinese')">
-<circle cx="650" cy="540" r="35" fill="black"/>
-<text x="650" y="540">CHINESE</text>
-</g>
-
-<g class="node" onclick="selectPantheon('vedic')">
-<circle cx="400" cy="680" r="35" fill="black"/>
-<text x="400" y="680">VEDIC</text>
-</g>
-
-<g class="node" onclick="selectPantheon('sumerian')">
-<circle cx="150" cy="540" r="35" fill="black"/>
-<text x="150" y="540">SUMER</text>
-</g>
-
-<g class="node" onclick="selectPantheon('nordic')">
-<circle cx="150" cy="260" r="35" fill="black"/>
-<text x="150" y="260">NORDIC</text>
-</g>
+    <g class="node">
+        <circle cx="150" cy="260" r="35" fill="black"/>
+        <text x="150" y="260">NORDIC</text>
+    </g>
 
 </svg>
 
 <script src="/static/script.js"></script>
 
 </body>
-</html>
+
+  </html>
