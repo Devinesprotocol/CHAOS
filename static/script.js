@@ -1,57 +1,79 @@
-let pantheon = null
-let entity = null
+let selectedPantheon = null;
+let selectedEntity = null;
 
+function selectPantheon(name) {
+    selectedPantheon = name.toLowerCase();
+    localStorage.setItem("pantheon", selectedPantheon);
 
-function selectPantheon(name){
-
-pantheon = name
-
-localStorage.setItem("pantheon",name)
-
-window.location = "/pantheon.html"
-
+    if (selectedPantheon === "greek") {
+        window.location.href = "/pantheon/greek";
+    }
 }
 
-
-function selectEntity(name){
-
-entity = name
-
-localStorage.setItem("entity",name)
-
-window.location = "/chat.html"
-
+function selectEntity(name) {
+    selectedEntity = name.toUpperCase();
+    localStorage.setItem("entity", selectedEntity);
+    window.location.href = "/chat";
 }
 
+function loadChatContext() {
+    selectedPantheon = localStorage.getItem("pantheon") || "greek";
+    selectedEntity = localStorage.getItem("entity") || "CHAOS";
 
-async function sendMessage(){
+    const title = document.getElementById("chat-entity");
+    if (title) {
+        title.innerText = selectedEntity;
+    }
+}
 
-const message = document.getElementById("message").value
+async function sendMessage() {
+    const input = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
 
-const response = await fetch("/chat",{
+    if (!input || !chatBox) return;
 
-method:"POST",
+    const message = input.value.trim();
+    if (!message) return;
 
-headers:{"Content-Type":"application/json"},
+    appendMessage("user", message);
+    input.value = "";
 
-body:JSON.stringify({
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                pantheon: selectedPantheon || "greek",
+                entity: selectedEntity || "CHAOS",
+                message: message
+            })
+        });
 
-pantheon:localStorage.getItem("pantheon"),
+        const data = await response.json();
 
-entity:localStorage.getItem("entity"),
+        if (data.reply) {
+            appendMessage("assistant", data.reply);
+        } else if (data.error) {
+            appendMessage("assistant", "Error: " + data.error);
+        } else {
+            appendMessage("assistant", "No response received.");
+        }
 
-message:message
+    } catch (error) {
+        appendMessage("assistant", "Connection error.");
+    }
+}
 
-})
+function appendMessage(role, text) {
+    const chatBox = document.getElementById("chat-box");
+    if (!chatBox) return;
 
-})
+    const message = document.createElement("div");
+    message.className = "message " + role;
+    message.innerText = text;
 
-const data = await response.json()
-
-const chat = document.getElementById("chat-window")
-
-chat.innerHTML += "<p><b>You:</b> "+message+"</p>"
-
-chat.innerHTML += "<p><b>"+data.entity+":</b> "+data.response+"</p>"
-
+    chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
