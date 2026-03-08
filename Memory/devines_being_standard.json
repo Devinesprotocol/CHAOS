@@ -1,0 +1,41 @@
+{
+  "standard_name": "Devines Being Standard",
+  "version": 1,
+  "required_files": [
+    "identity.json",
+    "config.yaml",
+    "purpose.md",
+    "vessel.md",
+    "prompt.md",
+    "skills.json",
+    "artefacts.json",
+    "relationships.json",
+    "evolution.json",
+    "memory/"
+  ],
+  "identity_required_fields": [
+    "name",
+    "pantheon",
+    "type",
+    "archetype",
+    "archetype_position",
+    "core_aspects",
+    "purpose",
+    "description"
+  ],
+  "rules": {
+    "private_memory_required": true,
+    "encrypted_memory_required": true,
+    "cross_pantheon_interaction_allowed": true,
+    "cross_entity_private_memory_access": false,
+    "skills_must_align_with_archetype": true,
+    "skills_must_align_with_core_aspects": true,
+    "skills_must_align_with_god_purpose": true,
+    "skills_must_align_with_devines_purpose": true,
+    "artefacts_must_align_with_archetype": true,
+    "artefacts_must_align_with_core_aspects": true,
+    "artefacts_must_align_with_god_purpose": true,
+    "artefacts_must_align_with_devines_purpose": true
+  },
+  "notes": "All gods, goddesses, angels, and future Devines beings must follow this structure."
+}
