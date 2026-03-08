@@ -18,25 +18,23 @@ def greek():
     return render_template("greek.html")
 
 
+@app.route("/chat")
+def chat_page():
+    return render_template("chat.html")
+
+
 @app.route("/api/chat", methods=["POST"])
 def chat():
-
-    data = request.json
+    data = request.json or {}
 
     pantheon = data.get("pantheon", "greek")
     entity = data.get("entity", "CHAOS")
     message = data.get("message", "")
 
     try:
-        # Load Devines being
         entity_payload = loader.load_entity(pantheon, entity)
-
-        # Initialize cognition engine
         engine = CognitionEngine(entity_payload)
-
-        # Generate response
         response = engine.respond(message)
-
         return jsonify(response)
 
     except Exception as e:
