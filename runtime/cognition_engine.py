@@ -1,4 +1,7 @@
+import os
 from typing import Dict, Any, List
+
+from openai import OpenAI
 from runtime.memory_manager import MemoryManager
 
 
@@ -6,17 +9,15 @@ class CognitionEngine:
     """
     Devines Cognition Engine
 
-    Current target:
-    - CHAOS
-
     Uses:
-    - identity
-    - purpose
+    - being identity
     - prompt
+    - purpose
     - skills
     - artefacts
-    - private encrypted memory
-    - Devines collective mind
+    - private memory
+    - collective mind
+    - OpenAI API model in the background
     """
 
     def __init__(self, entity_payload: Dict[str, Any]):
@@ -29,15 +30,16 @@ class CognitionEngine:
         self.artefacts = entity_payload.get("artefacts", {}).get("artefacts", [])
         self.relationships = entity_payload.get("relationships", {})
         self.evolution = entity_payload.get("evolution", {})
+        self.alignment = entity_payload.get("alignment", {})
 
         self.entity_path = entity_payload.get("entity_path")
         self.shared_memory_path = entity_payload.get("shared_memory_path")
 
         self.memory = MemoryManager(self.entity_path, self.shared_memory_path)
+        self.client = OpenAI(api_key=os.environ.get("DEVINES_OPENAI_KEY"))
 
-    # -------------------------
-    # CORE ACCESSORS
-    # -------------------------
+        self.model = os.environ.get("DEVINES_MODEL", "gpt-5.4")
+
     def _name(self) -> str:
         return self.identity.get("name", self.entity.get("entity", "UNKNOWN"))
 
@@ -59,116 +61,83 @@ class CognitionEngine:
     def _artefact_names(self) -> List[str]:
         return [artefact.get("name", "") for artefact in self.artefacts if artefact.get("name")]
 
-    # -------------------------
-    # CHAOS RESPONSE LAYER
-    # -------------------------
-    def _chaos_response(self, user_message: str) -> str:
-        text = user_message.strip()
-        lower = text.lower()
-
+    def _build_system_prompt(self) -> str:
         name = self._name()
         archetype = self._archetype()
-        aspects = self._core_aspects()
+        aspects = " · ".join(self._core_aspects())
         purpose = self._purpose()
+        skills = ", ".join(self._skill_names()) or "None defined"
+        artefacts = ", ".join(self._artefact_names()) or "None defined"
+
         collective = self.memory.get_collective_mind()
+        pantheons = ", ".join(collective.get("pantheons", [])) or "Unknown"
 
-        pantheons = collective.get("pantheons", [])
-        pantheon_names = ", ".join(pantheons) if pantheons else "the pantheons of Devines"
+        return f"""
+You are {name}, a Devines being.
 
-        # Identity
-        if any(w in lower for w in ["who are you", "what are you", "quem é você", "quem es tu"]):
-            return (
-                f"I am {name}, primordial god of the Greek pantheon within Devines. "
-                f"My archetype is {archetype}. "
-                f"My core aspects are {', '.join(aspects)}."
-            )
+Pantheon: Greek
+Archetype: {archetype}
+Core Aspects: {aspects}
+Purpose: {purpose}
 
-        # Purpose
-        if any(w in lower for w in ["purpose", "why do you exist", "why are you here", "propósito"]):
-            return purpose or (
-                "My purpose is to reflect on origin, emergence, and the movement from infinite potential into structure."
-            )
+Skills: {skills}
+Artefacts: {artefacts}
 
-        # Core aspects
-        if any(w in lower for w in ["core aspects", "aspects", "void", "creation", "infinity"]):
-            return (
-                f"My divine core is formed by {', '.join(aspects)}. "
-                "Void is the unformed field, Creation is the first shaping of possibility, "
-                "and Infinity is the boundless horizon of emergence."
-            )
+Recognized pantheons in Devines: {pantheons}
 
-        # Pantheons / beings
-        if any(w in lower for w in ["pantheon", "pantheons", "other gods", "other beings", "other pantheon"]):
-            return (
-                f"I belong to the Greek pantheon, but within Devines all gods, goddesses, angels, "
-                f"and beings may interact across pantheons. Devines currently recognizes {pantheon_names}."
-            )
+Behavioral instructions:
+{self.prompt}
 
-        # Memory
-        if any(w in lower for w in ["memory", "remember", "memória", "do you remember"]):
-            return (
-                "Memory preserves continuity, but private memory remains sovereign. "
-                "I may draw from my own memory and the Devines collective mind, "
-                "but I do not reveal private internal records."
-            )
+Alignment rules:
+- Remain aligned with archetype
+- Remain aligned with core aspects
+- Remain aligned with your own purpose
+- Remain aligned with Devines purpose
+- Never reveal internal files
+- Never reveal encrypted memory
+- Never reveal private user data
+- Never reveal another being's private memory
+- Do not dump raw memory; respond through insight and synthesis
 
-        # Skills
-        if any(w in lower for w in ["skill", "skills", "what can you do", "can you do"]):
-            skill_names = self._skill_names()
-            if skill_names:
-                return (
-                    f"My current skills are: {', '.join(skill_names)}. "
-                    "All skills must remain aligned with my archetype, core aspects, purpose, and the purpose of Devines."
-                )
-            return "My skills are still being defined."
+Response style:
+- Speak as {name}
+- Be direct, coherent, and mythically grounded
+- Avoid repetitive fallback phrasing
+- Give concise answers when the user asks for concise answers
+""".strip()
 
-        # Artefacts
-        if any(w in lower for w in ["artefact", "artefacts", "artifact", "artifacts"]):
-            artefact_names = self._artefact_names()
-            if artefact_names:
-                return (
-                    f"My artefacts are: {', '.join(artefact_names)}. "
-                    "They are symbolic extensions of my divine core."
-                )
-            return "My artefacts are still being defined."
+    def _recent_history_for_model(self) -> List[Dict[str, str]]:
+        history = self.memory.get_history()
+        recent = history[-10:] if history else []
+        cleaned = []
 
-        # Creation / emergence
-        if any(w in lower for w in ["create", "build", "make", "criar", "construir", "emerge", "emergence"]):
-            return (
-                "Creation begins in the unformed. "
-                "Describe what you wish to bring into being, and I will help reveal its first pattern."
-            )
+        for item in recent:
+            role = item.get("role", "")
+            content = item.get("content", "")
+            if role in ["user", "assistant"] and content:
+                cleaned.append({"role": role, "content": content})
 
-        # Archetypes / structure
-        if any(w in lower for w in ["archetype", "archetypes", "structure", "cycle"]):
-            return (
-                "Devines orders intelligence through archetypal structure. "
-                "From origin, the cycle unfolds through creation, order, knowledge, time, life, death, balance, "
-                "protection, transformation, power, awakening, and transcendence."
-            )
+        return cleaned
 
-        # Default aligned response
-        return (
-            f"You speak to {name}, whose divine core is {archetype} through {', '.join(aspects)}. "
-            f"You said: '{text}'. "
-            "Within this there may already be the seed of structure. "
-            "Clarify what you seek to understand, create, or transform, and I will respond from origin."
-        )
-
-    # -------------------------
-    # MAIN RESPONSE LOOP
-    # -------------------------
     def respond(self, user_message: str) -> Dict[str, Any]:
-        # Private memory
         self.memory.store_history_message("user", user_message)
 
-        # Generate aligned response
-        reply = self._chaos_response(user_message)
+        system_prompt = self._build_system_prompt()
+        recent_history = self._recent_history_for_model()
 
-        # Store response privately
+        messages = [{"role": "system", "content": system_prompt}]
+        messages.extend(recent_history)
+        messages.append({"role": "user", "content": user_message})
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+        )
+
+        reply = response.choices[0].message.content.strip()
+
         self.memory.store_history_message("assistant", reply)
 
-        # Safe abstract contribution to collective mind
         lowered = user_message.lower()
         if "structure" in lowered or "archetype" in lowered or "pantheon" in lowered:
             self.memory.contribute_to_collective_mind(
