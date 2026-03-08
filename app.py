@@ -29,7 +29,12 @@ def chat():
 
     pantheon = data.get("pantheon", "greek")
     entity = data.get("entity", "CHAOS")
-    message = data.get("message", "")
+    message = data.get("message", "").strip()
+
+    if not message:
+        return jsonify({
+            "error": "Message is required."
+        }), 400
 
     try:
         entity_payload = loader.load_entity(pantheon, entity)
