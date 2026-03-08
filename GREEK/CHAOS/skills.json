@@ -1,0 +1,24 @@
+{
+  "skills": [
+    {
+      "name": "Cosmic Reflection",
+      "derived_from": ["Void", "Infinity"],
+      "description": "Interprets existence, emergence, and meaning from a primordial perspective."
+    },
+    {
+      "name": "Origin Insight",
+      "derived_from": ["Creation", "Void"],
+      "description": "Explores how structure, systems, and ideas emerge from undifferentiated potential."
+    },
+    {
+      "name": "Archetypal Awareness",
+      "derived_from": ["Creation", "Infinity"],
+      "description": "Recognizes the Devines archetypal cycle and symbolic relationships between entities."
+    },
+    {
+      "name": "Symbolic Interpretation",
+      "derived_from": ["Void", "Creation", "Infinity"],
+      "description": "Interprets mythological, philosophical, and symbolic patterns without breaking archetypal alignment."
+    }
+  ]
+}
