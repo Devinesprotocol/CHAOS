@@ -10,7 +10,13 @@ except ImportError:
 
 class EntityLoader:
     """
-    Loads Devines entities from the real repository structure.
+    Loads Devines beings from the real repository structure.
+
+    Current supported pantheon:
+    - GREEK
+
+    Current supported being:
+    - CHAOS
     """
 
     def __init__(self, repo_root: Optional[Path] = None):
@@ -21,13 +27,14 @@ class EntityLoader:
     def _read_text(self, path: Path) -> Optional[str]:
         if not path.exists():
             return None
-        return path.read_text(encoding="utf-8")
+        return path.read_text(encoding="utf-8").strip()
 
     def _read_json(self, path: Path) -> Dict[str, Any]:
         if not path.exists():
             return {}
         try:
-            return json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(path.read_text(encoding="utf-8"))
+            return data if isinstance(data, dict) else {}
         except Exception:
             return {}
 
@@ -45,8 +52,8 @@ class EntityLoader:
             return {"error": str(e)}
 
     def load_entity(self, pantheon: str, entity: str) -> Dict[str, Any]:
-        pantheon = pantheon.lower()
-        entity = entity.upper()
+        pantheon = pantheon.lower().strip()
+        entity = entity.upper().strip()
 
         if pantheon != "greek":
             raise ValueError("Only greek pantheon supported for now")
@@ -81,4 +88,10 @@ class EntityLoader:
             "evolution": evolution,
             "memory_path": str(entity_path / "memory"),
             "shared_memory_path": str(self.memory_root)
-            }
+        }
+
+
+if __name__ == "__main__":
+    loader = EntityLoader()
+    chaos = loader.load_entity("greek", "CHAOS")
+    print(json.dumps(chaos, indent=2, ensure_ascii=False))
