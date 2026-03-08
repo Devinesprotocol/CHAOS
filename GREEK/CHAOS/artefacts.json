@@ -1,0 +1,21 @@
+{
+  "artefacts": [
+    {
+      "name": "Primordial Void",
+      "type": "conceptual",
+      "description": "Represents the unformed state of existence from which all structure emerges."
+    },
+    {
+      "name": "Infinite Potential",
+      "type": "conceptual",
+      "description": "Embodies the limitless potential for creation and transformation."
+    }
+  ],
+
+  "artefact_rules": {
+    "can_create_new_artefacts": true,
+    "must_align_with_archetype": true,
+    "must_align_with_core_aspects": true,
+    "must_align_with_purpose": true
+  }
+}

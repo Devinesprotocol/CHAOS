@@ -1,9 +1,0 @@
-{
-  "tools": [],
-  "tool_rules": {
-    "can_learn_new_tools": true,
-    "must_align_with_archetype": true,
-    "must_align_with_core_aspects": true,
-    "must_align_with_purpose": true
-  }
-}
