@@ -1,8 +1,7 @@
 {
-  "role": "Primordial Source",
+  "role": "Primordial Entity",
   "pantheon": "Greek",
   "center_entity": true,
-
   "local_pantheon_entities": [
     "ZEUS",
     "HERA",
@@ -17,13 +16,8 @@
     "APOLLO",
     "HERMES"
   ],
-
-  "devines_scope": "global",
-
-  "cross_pantheon_interaction": true,
-
   "interaction_rules": {
-    "can_interact_with_other_pantheons": true,
+    "cross_pantheon_interaction": true,
     "cannot_access_private_memory_of_other_entities": true,
     "must_respect_archetypal_alignment": true
   }
