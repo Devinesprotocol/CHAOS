@@ -1,36 +1,84 @@
 import json
-import yaml
 from pathlib import Path
+from typing import Any, Dict, Optional
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
-def load_entity(pantheon, entity_name):
+class EntityLoader:
+    """
+    Loads Devines entities from the real repository structure.
+    """
 
-    pantheon_dir = BASE_DIR / pantheon.upper()
-    entity_dir = pantheon_dir / entity_name.upper()
+    def __init__(self, repo_root: Optional[Path] = None):
+        self.repo_root = repo_root or Path(__file__).resolve().parent.parent
+        self.greek_root = self.repo_root / "GREEK"
+        self.memory_root = self.repo_root / "Memory"
 
-    entity = {
-        "name": entity_name,
-        "pantheon": pantheon
-    }
+    def _read_text(self, path: Path) -> Optional[str]:
+        if not path.exists():
+            return None
+        return path.read_text(encoding="utf-8")
 
-    # identity
-    identity_file = entity_dir / "identity.json"
-    if identity_file.exists():
-        with open(identity_file) as f:
-            entity["identity"] = json.load(f)
+    def _read_json(self, path: Path) -> Dict[str, Any]:
+        if not path.exists():
+            return {}
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
 
-    # config (yaml)
-    config_file = entity_dir / "config.yaml"
-    if config_file.exists():
-        with open(config_file) as f:
-            entity["config"] = yaml.safe_load(f)
+    def _read_yaml(self, path: Path) -> Dict[str, Any]:
+        if not path.exists():
+            return {}
 
-    # relationships
-    rel_file = entity_dir / "relationships.json"
-    if rel_file.exists():
-        with open(rel_file) as f:
-            entity["relationships"] = json.load(f)
+        if yaml is None:
+            return {"warning": "yaml not installed"}
 
-    return entity
+        try:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            return data if isinstance(data, dict) else {}
+        except Exception as e:
+            return {"error": str(e)}
+
+    def load_entity(self, pantheon: str, entity: str) -> Dict[str, Any]:
+        pantheon = pantheon.lower()
+        entity = entity.upper()
+
+        if pantheon != "greek":
+            raise ValueError("Only greek pantheon supported for now")
+
+        entity_path = self.greek_root / entity
+
+        if not entity_path.exists():
+            raise FileNotFoundError(f"Entity folder not found: {entity_path}")
+
+        identity = self._read_json(entity_path / "identity.json")
+        config = self._read_yaml(entity_path / "config.yaml")
+        purpose = self._read_text(entity_path / "purpose.md")
+        vessel = self._read_text(entity_path / "vessel.md")
+        prompt = self._read_text(entity_path / "prompt.md")
+        relationships = self._read_json(entity_path / "relationships.json")
+        skills = self._read_json(entity_path / "skills.json")
+        artefacts = self._read_json(entity_path / "artefacts.json")
+        evolution = self._read_json(entity_path / "evolution.json")
+
+        return {
+            "pantheon": pantheon,
+            "entity": entity,
+            "entity_path": str(entity_path),
+            "identity": identity,
+            "config": config,
+            "purpose": purpose,
+            "vessel": vessel,
+            "prompt": prompt,
+            "relationships": relationships,
+            "skills": skills,
+            "artefacts": artefacts,
+            "evolution": evolution,
+            "memory_path": str(entity_path / "memory"),
+            "shared_memory_path": str(self.memory_root)
+            }
