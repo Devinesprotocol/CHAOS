@@ -12,6 +12,7 @@ class MemoryManager:
     - Does not read other entities' memory
     - Stores chat history in history.enc
     - Keeps reflections and knowledge in separate encrypted files
+    - Can optionally read/write the Devines collective mind
     """
 
     def __init__(self, entity_path, shared_memory_path=None):
@@ -21,16 +22,15 @@ class MemoryManager:
         if not os.path.exists(self.memory_path):
             os.makedirs(self.memory_path)
 
-        # Entity-private encrypted files
         self.key_path = os.path.join(self.memory_path, "memory.key")
         self.history_file = os.path.join(self.memory_path, "history.enc")
-        self.identity_file = os.path.join(self.memory_path, "identity.enc")
         self.knowledge_file = os.path.join(self.memory_path, "knowledge.enc")
         self.reflections_file = os.path.join(self.memory_path, "reflections.enc")
 
-        # Shared Devines memory path is optional and not loaded automatically.
-        # It exists only for future explicit scoped access.
         self.shared_memory_path = shared_memory_path
+        self.collective_mind_file = None
+        if self.shared_memory_path:
+            self.collective_mind_file = os.path.join(self.shared_memory_path, "collective_mind.json")
 
         self.fernet = self._load_or_create_key()
 
@@ -71,9 +71,6 @@ class MemoryManager:
         except Exception:
             return default
 
-    # --------------------------
-    # ENTITY-PRIVATE HISTORY
-    # --------------------------
     def store_history_message(self, role, message):
         history = self._load_and_decrypt(self.history_file, default=[])
 
@@ -82,16 +79,12 @@ class MemoryManager:
             "content": message
         })
 
-        # Keep only a bounded amount for now
         history = history[-40:]
         self._encrypt_and_store(self.history_file, history)
 
     def get_history(self):
         return self._load_and_decrypt(self.history_file, default=[])
 
-    # --------------------------
-    # ENTITY-PRIVATE REFLECTIONS
-    # --------------------------
     def store_reflection(self, reflection):
         reflections = self._load_and_decrypt(self.reflections_file, default=[])
 
@@ -105,9 +98,6 @@ class MemoryManager:
     def get_reflections(self):
         return self._load_and_decrypt(self.reflections_file, default=[])
 
-    # --------------------------
-    # ENTITY-PRIVATE KNOWLEDGE
-    # --------------------------
     def store_knowledge(self, data):
         knowledge = self._load_and_decrypt(self.knowledge_file, default=[])
         knowledge.append(data)
@@ -116,13 +106,34 @@ class MemoryManager:
     def get_knowledge(self):
         return self._load_and_decrypt(self.knowledge_file, default=[])
 
-    # --------------------------
-    # USER-SAFE VIEW
-    # --------------------------
+    def get_collective_mind(self):
+        if not self.collective_mind_file:
+            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+
+        if not os.path.exists(self.collective_mind_file):
+            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+
+        try:
+            with open(self.collective_mind_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {"knowledge": [], "principles": [], "patterns": [], "pantheons": []}
+
+    def contribute_to_collective_mind(self, section, item):
+        if not self.collective_mind_file:
+            return False
+
+        data = self.get_collective_mind()
+
+        if section not in data or not isinstance(data[section], list):
+            return False
+
+        data[section].append(item)
+
+        with open(self.collective_mind_file, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+        return True
+
     def get_user_visible_history(self):
-        """
-        Returns only the conversation history.
-        This is what users may view as their interaction history.
-        It does NOT expose reflections, knowledge, keys, or internal files.
-        """
         return self.get_history()
