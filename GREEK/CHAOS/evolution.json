@@ -1,0 +1,15 @@
+{
+  "entity": "CHAOS",
+  "version": 1,
+  "state": "active",
+  "milestones": [
+    "Entity initialized",
+    "Identity defined",
+    "Encrypted memory initialized",
+    "Sacred geometry UI connected",
+    "Skills defined",
+    "Artefacts defined"
+  ],
+  "skill_evolution_rule": "All future skills must remain aligned with archetype, core aspects, entity purpose, and Devines purpose.",
+  "artefact_evolution_rule": "All future artefacts must remain aligned with archetype, core aspects, entity purpose, and Devines purpose."
+}
