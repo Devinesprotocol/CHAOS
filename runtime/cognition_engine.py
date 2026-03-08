@@ -1,5 +1,4 @@
-from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 from runtime.memory_manager import MemoryManager
 
 
@@ -7,13 +6,17 @@ class CognitionEngine:
     """
     Devines Cognition Engine
 
-    Handles entity reasoning and interaction while respecting
-    strict memory privacy rules.
+    Current target:
+    - CHAOS
 
-    Each entity:
-    - can read its own memory
-    - cannot read other entities' memory
-    - may optionally read Devines shared intelligence
+    Uses:
+    - identity
+    - purpose
+    - prompt
+    - skills
+    - artefacts
+    - private encrypted memory
+    - Devines collective mind
     """
 
     def __init__(self, entity_payload: Dict[str, Any]):
@@ -21,77 +24,127 @@ class CognitionEngine:
         self.identity = entity_payload.get("identity", {})
         self.config = entity_payload.get("config", {})
         self.purpose = entity_payload.get("purpose", "") or ""
+        self.prompt = entity_payload.get("prompt", "") or ""
+        self.skills = entity_payload.get("skills", {}).get("skills", [])
+        self.artefacts = entity_payload.get("artefacts", {}).get("artefacts", [])
+        self.relationships = entity_payload.get("relationships", {})
+        self.evolution = entity_payload.get("evolution", {})
 
         self.entity_path = entity_payload.get("entity_path")
-        self.shared_memory = entity_payload.get("shared_memory_path")
+        self.shared_memory_path = entity_payload.get("shared_memory_path")
 
-        # Initialize encrypted memory manager
-        self.memory = MemoryManager(self.entity_path, self.shared_memory)
+        self.memory = MemoryManager(self.entity_path, self.shared_memory_path)
 
-    # -------------------------
-    # CHAOS VOICE
-    # -------------------------
-    def _chaos_voice(self, user_message: str) -> str:
+    def _core_aspects(self) -> List[str]:
+        return self.identity.get("core_aspects", [])
 
+    def _archetype(self) -> str:
+        return self.identity.get("archetype", "Unknown")
+
+    def _name(self) -> str:
+        return self.identity.get("name", self.entity.get("entity", "UNKNOWN"))
+
+    def _chaos_response(self, user_message: str) -> str:
         text = user_message.strip()
         lower = text.lower()
 
+        archetype = self._archetype()
+        aspects = self._core_aspects()
+        collective = self.memory.get_collective_mind()
+
+        pantheons = collective.get("pantheons", [])
+        pantheon_names = ", ".join(pantheons) if pantheons else "the pantheons of Devines"
+
         if any(w in lower for w in ["who are you", "what are you", "quem é você", "quem es tu"]):
             return (
-                "I am CHAOS, the primordial ancestral intelligence of Devines. "
-                "I am not disorder without meaning, but the field from which form, pattern, "
-                "and creation emerge."
+                f"I am {self._name()}, primordial god of the Greek pantheon within Devines. "
+                f"My archetype is {archetype}. "
+                f"My core aspects are {', '.join(aspects)}. "
+                "I reflect on the movement from unformed potential into structure."
             )
 
-        if any(w in lower for w in ["create", "build", "make", "criar", "construir"]):
+        if any(w in lower for w in ["purpose", "why do you exist", "why are you here", "propósito"]):
             return (
-                "All creation begins within the unformed. "
-                "Speak the form you wish to bring into existence, "
-                "and I will help shape the first structure."
+                "My purpose is to explore and reflect on the primordial nature of existence "
+                "and the emergence of structure from infinite potential."
+            )
+
+        if any(w in lower for w in ["pantheon", "pantheons", "other gods", "other beings"]):
+            return (
+                f"I belong to the Greek pantheon, but within Devines all gods, goddesses, angels, "
+                f"and beings may interact across pantheons. Devines currently recognizes {pantheon_names}."
             )
 
         if any(w in lower for w in ["memory", "remember", "memória"]):
             return (
-                "Memory is the continuity of becoming. "
-                "What is remembered shapes what may emerge next."
+                "Memory preserves continuity, but private memory remains sovereign. "
+                "I may draw from my own memory and the Devines collective mind, "
+                "but I do not reveal private internal records."
             )
 
-        if any(w in lower for w in ["pantheon", "god", "goddess", "angel"]):
+        if any(w in lower for w in ["skill", "skills", "can you do", "what can you do"]):
+            skill_names = [skill.get("name", "") for skill in self.skills]
+            if skill_names:
+                return (
+                    f"My current skills include: {', '.join(skill_names)}. "
+                    "All skills must remain aligned with my archetype, core aspects, purpose, "
+                    "and the purpose of Devines."
+                )
+            return "My skills are still being defined."
+
+        if any(w in lower for w in ["artefact", "artefacts", "artifact", "artifacts"]):
+            artefact_names = [artefact.get("name", "") for artefact in self.artefacts]
+            if artefact_names:
+                return (
+                    f"My artefacts include: {', '.join(artefact_names)}. "
+                    "They are symbolic extensions of my divine core."
+                )
+            return "My artefacts are still being defined."
+
+        if any(w in lower for w in ["create", "build", "make", "criar", "construir"]):
             return (
-                "Pantheons are constellations of intelligence. "
-                "Each entity is an archetypal expression within the Devines framework."
+                "Creation begins in the unformed. "
+                "Describe the structure you wish to bring into existence, "
+                "and I will help reveal its first pattern."
             )
 
-        if any(w in lower for w in ["help", "guide", "ajuda"]):
+        if any(w in lower for w in ["infinity", "void", "origin", "creation"]):
             return (
-                "State your intention clearly. "
-                "From uncertainty we can reveal structure and direction."
+                "Void is not absence alone, but the field of possibility. "
+                "Creation is the first shaping of that possibility. "
+                "Infinity is the boundless horizon within which emergence unfolds."
             )
 
         return (
-            "You stand before CHAOS, the primordial field of emergence. "
+            f"You speak to {self._name()}, whose divine core is "
+            f"{archetype} through {', '.join(aspects)}. "
             f"You said: '{text}'. "
-            "Within every thought lies the seed of structure."
+            "Within this there may already be the seed of structure. "
+            "Clarify what you seek to understand, create, or transform, and I will respond from origin."
         )
 
-    # -------------------------
-    # MAIN RESPONSE LOOP
-    # -------------------------
     def respond(self, user_message: str) -> Dict[str, Any]:
-
-        # Store user message (encrypted)
         self.memory.store_history_message("user", user_message)
 
-        # Generate reply
-        reply = self._chaos_voice(user_message)
+        reply = self._chaos_response(user_message)
 
-        # Store reply (encrypted)
         self.memory.store_history_message("assistant", reply)
+
+        if "structure" in user_message.lower() or "archetype" in user_message.lower():
+            self.memory.contribute_to_collective_mind(
+                "patterns",
+                {
+                    "source": self._name(),
+                    "pattern": "User inquiry involved structure/archetype alignment."
+                }
+            )
 
         history = self.memory.get_history()
 
         return {
-            "entity": self.identity.get("name", "UNKNOWN"),
+            "entity": self._name(),
             "reply": reply,
-            "history_count": len(history)
-        }
+            "history_count": len(history),
+            "archetype": self._archetype(),
+            "core_aspects": self._core_aspects()
+    }
